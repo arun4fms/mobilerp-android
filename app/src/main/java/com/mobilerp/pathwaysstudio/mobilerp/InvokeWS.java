@@ -2,11 +2,15 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 /**
  * Created by mloki on 01/03/2017.
@@ -36,7 +40,7 @@ public class InvokeWS {
     /**
      * Check Login enpoint
      */
-    final String checkLogin = "checkLogin/";
+    final String checkLogin = "user/checkLogin/";
 
     /**
      * Client used by all request.
@@ -48,26 +52,27 @@ public class InvokeWS {
     /**
      * Finds a product in the Web Service
      */
-    public void findProduct(String barcode, RequestResponse rR){
-        final RequestResult  rs = new RequestResult();
+    public void findProduct(String barcode, RequestResponse rR) {
+        final RequestResult rs = new RequestResult();
         final RequestResponse requestResponse = rR;
         rs.setStringResult(WAIT_STRING);
         client = new AsyncHttpClient();
-        client.setBasicAuth("carlo","123");
+        client.setBasicAuth("carlo", "123");
         client.get(baseURL + findProduct + barcode, new AsyncHttpResponseHandler
                 () {
             @Override
             public void onSuccess(int responseCode, Header[] headers, byte[] responseBody) {
                 String str = new String(responseBody);
-                try{
+                try {
                     rs.setJsonResult(new JSONObject(str));
                     rs.setStringResult(rs.getJsonResult().toString());
                     requestResponse.onResponseReceived(rs);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     rs.setStringResult(e.toString());
                     requestResponse.onResponseReceived(rs);
                 }
             }
+
             @Override
             public void onFailure(int responseCode, Header[] headers, byte[] responseBody,
                                   Throwable throwable) {
@@ -80,26 +85,27 @@ public class InvokeWS {
     }
 
     // List all the products in the WebService
-    public void listProducts(RequestResponse rR){
-        final RequestResult  rs = new RequestResult();
+    public void listProducts(RequestResponse rR) {
+        final RequestResult rs = new RequestResult();
         final RequestResponse requestResponse = rR;
         rs.setStringResult(WAIT_STRING);
         client = new AsyncHttpClient();
-        client.setBasicAuth("carlo","123");
+        client.setBasicAuth("carlo", "123");
         client.get(baseURL + listProducts, new AsyncHttpResponseHandler
                 () {
             @Override
             public void onSuccess(int responseCode, Header[] headers, byte[] responseBody) {
                 String str = new String(responseBody);
-                try{
+                try {
                     rs.setJsonResult(new JSONObject(str));
                     rs.setStringResult(rs.getJsonResult().toString());
                     requestResponse.onResponseReceived(rs);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     rs.setStringResult(e.toString());
                     requestResponse.onResponseReceived(rs);
                 }
             }
+
             @Override
             public void onFailure(int responseCode, Header[] headers, byte[] responseBody,
                                   Throwable throwable) {
@@ -112,27 +118,45 @@ public class InvokeWS {
     }
 
     // List all the products in the WebService
-    public void checkLogin(String user, String pass, RequestResponse rR){
-        final RequestResult  rs = new RequestResult();
+    public void checkLogin(String user, String pass, RequestResponse rR) {
+        final RequestResult rs = new RequestResult();
         final RequestResponse requestResponse = rR;
+        JSONObject params = new JSONObject();
         rs.setStringResult(WAIT_STRING);
         client = new AsyncHttpClient();
-        JSONObject loginData = new JSONObject();
-        //loginData.keys()
-        client.get(baseURL + checkLogin, new AsyncHttpResponseHandler
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity("empty");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        try {
+            params.put("user", user);
+            params.put("pass", pass);
+            entity = new StringEntity(params.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        client.get(null, baseURL + checkLogin, entity, "application/json", new
+                AsyncHttpResponseHandler
                 () {
             @Override
             public void onSuccess(int responseCode, Header[] headers, byte[] responseBody) {
                 String str = new String(responseBody);
-                try{
+                try {
                     rs.setJsonResult(new JSONObject(str));
                     rs.setStringResult(rs.getJsonResult().toString());
+                    rs.setCodeResult(responseCode);
                     requestResponse.onResponseReceived(rs);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     rs.setStringResult(e.toString());
+                    rs.setCodeResult(responseCode);
                     requestResponse.onResponseReceived(rs);
                 }
             }
+
             @Override
             public void onFailure(int responseCode, Header[] headers, byte[] responseBody,
                                   Throwable throwable) {
@@ -141,17 +165,17 @@ public class InvokeWS {
                 requestResponse.onResponseReceived(rs);
             }
         });
-        requestResponse.onResponseReceived(rs);
+        //requestResponse.onResponseReceived(rs);
     }
 
-    private String CheckWSError(int responseCode){
-        if (responseCode == 404){
+    private String CheckWSError(int responseCode) {
+        if (responseCode == 404) {
             return "Elemento no encontrado";
         }
-        if (responseCode == 401){
-            return  "Acceso Denegado";
+        if (responseCode == 401) {
+            return "Acceso Denegado";
         }
-        if (responseCode == 500){
+        if (responseCode == 500) {
             return "Error del servidor";
         }
         return "Error desconocido del servidor" + Integer.toString(responseCode);

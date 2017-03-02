@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //HTTP
 import com.loopj.android.http.AsyncHttpClient;
@@ -38,7 +39,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkLogin(View view){
-
+        String user="carlo";
+        String pass="123";
+        ws.checkLogin(user, pass, new RequestResponse() {
+            @Override
+            public void onResponseReceived(RequestResult result) {
+                if (result.getCodeResult() == 200) {
+                    Toast.makeText(contx, "Exito",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(contx, "Fallo", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public void findProduct(View view){

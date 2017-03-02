@@ -37,10 +37,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fetchProduct(View view){
-        TextView showProduct = (TextView)findViewById(R.id.tvProductName);
+        final TextView showProduct = (TextView)findViewById(R.id.tvProductName);
         //invokeWS();
-        RequestResult rs = ws.findProduct("123");
-        showProduct.setText(rs.getStringResult());
+        ws.findProduct("123", new RequestResponse(){
+            @Override
+            public void onResponseReceived(RequestResult result){
+                showProduct.setText(result.getStringResult());
+            }
+        });
     }
 
     public void invokeWS(){

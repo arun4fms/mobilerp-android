@@ -15,13 +15,16 @@ import cz.msebera.android.httpclient.Header;
 public class InvokeWS {
 
     String baseURL = "http://192.168.1.70:5000/mobilerp/api/v1.0/";
-    String findProduct = "/findProduct/";
+    String findProduct = "findProduct/";
     AsyncHttpClient client;
 
+    final String WAIT_STRING = "Espere un momento...";
+
     // Finds a product in the Web Service
-    public RequestResult findProduct(String barcode){
+    public void findProduct(String barcode, RequestResponse rR){
         final RequestResult  rs = new RequestResult();
-        rs.setStringResult("Lol not finished");
+        final RequestResponse requestResponse = rR;
+        rs.setStringResult(WAIT_STRING);
         client = new AsyncHttpClient();
         client.setBasicAuth("carlo","123");
         client.get(baseURL + findProduct + barcode, new AsyncHttpResponseHandler
@@ -32,8 +35,10 @@ public class InvokeWS {
                 try{
                     rs.setJsonResult(new JSONObject(str));
                     rs.setStringResult(rs.getJsonResult().toString());
+                    requestResponse.onResponseReceived(rs);
                 }catch (JSONException e){
                     rs.setStringResult(e.toString());
+                    requestResponse.onResponseReceived(rs);
                 }
             }
             @Override
@@ -41,9 +46,10 @@ public class InvokeWS {
                                   Throwable throwable) {
                 rs.setCodeResult(responseCode);
                 rs.setStringResult(CheckWSError(responseCode));
+                requestResponse.onResponseReceived(rs);
             }
         });
-        return rs;
+        requestResponse.onResponseReceived(rs);
     }
 
     private String CheckWSError(int responseCode){

@@ -2,6 +2,7 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -36,52 +37,26 @@ public class MainActivity extends AppCompatActivity {
         contx = this;
     }
 
-    public void fetchProduct(View view){
-        final TextView showProduct = (TextView)findViewById(R.id.tvProductName);
-        //invokeWS();
-        ws.findProduct("123", new RequestResponse(){
+    public void checkLogin(View view){
+
+    }
+
+    public void findProduct(View view){
+        Intent intent = new Intent(this, adminActivity.class);
+        startActivity(intent);
+        //final TextView showProduct = (TextView)findViewById(R.id.tvProductName);
+        /*ws.findProduct("123", new RequestResponse(){
             @Override
             public void onResponseReceived(RequestResult result){
                 showProduct.setText(result.getStringResult());
             }
-        });
-    }
+        });*/
 
-    public void invokeWS(){
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.setBasicAuth("carlo","123");
-        client.get(url, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        TextView tvProductName = (TextView)findViewById(R.id.tvProductName);
-                        String str = new String(responseBody);
-                        JSONObject res = null;
-                        String result;
-                        try{
-                            res =new JSONObject(str);
-                            result=res.toString();
-                        }catch (JSONException e){
-                            result=e.toString();
-                        }
-                        tvProductName.append(result+"\n"+str);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody,
-                                          Throwable
-                            throwable) {
-                        TextView tvProductName = (TextView)findViewById(R.id.tvProductName);
-                        if (statusCode == 404){
-                            tvProductName.setText("Producto no encontrado");
-                        }
-                        if (statusCode == 401){
-                            tvProductName.setText("Acceso no autorizado");
-                        }
-                        if (statusCode == 500){
-                            tvProductName.setText("Error del servidor");
-                        }
-                    }
-                }
-        );
+        /*ws.listProducts(new RequestResponse(){
+            @Override
+            public void onResponseReceived(RequestResult result){
+                showProduct.setText(result.getStringResult());
+            }
+        });*/
     }
 }

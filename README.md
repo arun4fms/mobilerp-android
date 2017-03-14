@@ -2,6 +2,8 @@
 
 A small self-hosted ERP that works with your smarphone
 
+[![Build Status](https://travis-ci.org/eligiobz/mobilerp-android.svg?branch=master)](https://travis-ci.org/eligiobz/mobilerp-android)
+
 ## The idea
 
 Have a small business who want or need an ERP but have no internet access or can't afford to pay a susbcrition to a cloud hosted service? This solution is for you.

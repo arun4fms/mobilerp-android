@@ -28,31 +28,40 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private final String TAG = "FETCH";
+    private final String TAG = "Revisando credenciales";
     Context contx;
     ProgressDialog pd;
     InvokeWS ws;
+
+    public LoginActivity() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ws = new InvokeWS();
         //get context
         contx = this;
+        pd = new ProgressDialog(contx, ProgressDialog.STYLE_SPINNER);
+        ws = new InvokeWS();
     }
 
     public void checkLogin(View view){
         User user = User.getInstance();
         user.setName("carlo");
         user.setPass("123");
+        pd.setMessage(TAG);
+        pd.show();
         ws.checkLogin(user, new RequestResponse() {
             @Override
             public void onResponseReceived(RequestResult result) {
                 if (result.getCodeResult() == 200) {
                     Toast.makeText(contx, "Exito",Toast.LENGTH_LONG).show();
+                    pd.dismiss();
                     finish();
                 } else {
+                    pd.dismiss();
                     Toast.makeText(contx, "Fallo", Toast.LENGTH_LONG).show();
                 }
             }

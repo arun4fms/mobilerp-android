@@ -69,6 +69,7 @@ public class InvokeWS {
         client.setBasicAuth("carlo", "123");
         client.get(baseURL + findProduct + barcode, new AsyncHttpResponseHandler
                 () {
+
             @Override
             public void onSuccess(int responseCode, Header[] headers, byte[] responseBody) {
                 String str = new String(responseBody);
@@ -149,7 +150,8 @@ public class InvokeWS {
         client.get(null, baseURL + checkLogin, entity, "application/json", new
                 AsyncHttpResponseHandler
                 () {
-            @Override
+
+                    @Override
             public void onSuccess(int responseCode, Header[] headers, byte[] responseBody) {
                 String str = new String(responseBody);
                 try {

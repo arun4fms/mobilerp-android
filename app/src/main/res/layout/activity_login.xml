@@ -9,77 +9,77 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.mobilerp.pathwaysstudio.mobilerp.MainActivity">
+    tools:context="com.mobilerp.pathwaysstudio.mobilerp.LoginActivity">
 
     <TextView
-        android:text="Usuario"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/textView"
-        android:textSize="24sp"
-        android:textAlignment="center"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:text="Usuario"
+        android:textAlignment="center"
+        android:textSize="24sp"/>
 
     <EditText
+        android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="13dp"
-        android:id="@+id/editText"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="13dp"
         android:contentDescription="Ingrese su nombre de usuario"
+        android:ems="10"
+        android:inputType="textPersonName"
         android:selectAllOnFocus="true"/>
 
     <TextView
-        android:text="Contraseña"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp"
-        android:id="@+id/textView2"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="24sp"
-        android:textAlignment="center"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText"
+        android:layout_marginTop="23dp"
+        android:text="Contraseña"
+        android:textAlignment="center"
+        android:textSize="24sp"/>
 
     <EditText
+        android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/textView2"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:contentDescription="Ingrese su contraseña"
-        android:selectAllOnFocus="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="25dp"
+        android:contentDescription="Ingrese su contraseña"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"/>
 
     <Button
-        android:text="Entrar"
+        android:id="@+id/btnWebService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnWebService"
-        android:onClick="checkLogin"
-        android:layout_below="@+id/editText2"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="27dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText2"
+        android:layout_marginTop="27dp"
+        android:onClick="checkLogin"
+        android:text="Entrar"/>
 
 </RelativeLayout>

@@ -1,0 +1,28 @@
+@startuml
+class User{
+    + id
+    + password
+    + level
+}
+
+class Product{
+    + barcode
+    + units
+    + price
+    + name
+}
+
+class Sale{
+    + id
+    + date
+}
+
+class SaleDetails{
+    + id_sale
+    + id_product
+    + product_price
+}
+
+Product --o SaleDetails
+Sale --o SaleDetails
+@enduml

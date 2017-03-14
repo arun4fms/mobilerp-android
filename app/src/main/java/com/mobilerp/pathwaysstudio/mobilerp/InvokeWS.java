@@ -24,8 +24,6 @@ public class InvokeWS {
      * Find product endpoint
      */
     final String findProduct = "findProduct/";
-    //String baseURL = "http://192.168.0.102:5000/mobilerp/api/v1.0/";
-    //private final String url = "http://192.168.1.70:5000/mobilerp/api/v1.0/findProduct/123";
     /**
      * List all product enpoint
      */
@@ -39,7 +37,8 @@ public class InvokeWS {
      * Base URL
      * TODO: Find a way to make this configurable, preferebly autoconfig
      */
-    String baseURL = "http://192.168.1.75:5000/mobilerp/api/v1.0/";
+    //String baseURL = "http://192.168.1.75:5000/mobilerp/api/v1.0/";
+    String baseURL = "http://192.168.0.107:5000/mobilerp/api/v1.0/";
     /**
      * Client used by all request.
      */

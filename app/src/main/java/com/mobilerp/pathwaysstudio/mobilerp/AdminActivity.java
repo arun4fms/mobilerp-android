@@ -18,9 +18,11 @@
 
 package com.mobilerp.pathwaysstudio.mobilerp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TabHost;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -30,9 +32,48 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        if (!user.getIsLoginIn()) {
+        /*if (!user.getIsLoginIn()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        }*/
+
+        TabHost host = (TabHost) findViewById(R.id.tabHost);
+        host.setup();
+
+        // tab 1
+        TabHost.TabSpec spec = host.newTabSpec("Farmacia");
+        spec.setContent(R.id.tab1);
+        spec.setIndicator("Farmacia");
+        host.addTab(spec);
+
+        // tab 2
+        spec = host.newTabSpec("Ventas");
+        spec.setContent(R.id.tab2);
+        spec.setIndicator("Ventas");
+        host.addTab(spec);
+
+        // tab 3
+        spec = host.newTabSpec("Pacientes");
+        spec.setContent(R.id.tab3);
+        spec.setIndicator("Pacientes");
+        host.addTab(spec);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // inflate the menu, this adds items to th action bar if present
+        getMenuInflater().inflate(R.menu.menu_admin, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 }

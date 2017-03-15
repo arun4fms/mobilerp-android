@@ -44,7 +44,7 @@ public class CustomListAdapter extends ArrayAdapter<CustomListModel> {
         LayoutInflater inflater = (LayoutInflater) contx.getSystemService(Context
                 .LAYOUT_INFLATER_SERVICE);
 
-        View rowView = null;
+        View rowView;
         if (!modelsArrayList.get(position).getIsGroupHeader()) {
             rowView = inflater.inflate(R.layout.option_row, parent, false);
 

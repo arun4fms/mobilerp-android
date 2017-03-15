@@ -32,8 +32,10 @@ public class AdminActivity extends AppCompatActivity {
     User user = User.getInstance();
 
     TabHost host;
-    ListView listView;
-    CustomListAdapter listAdapter;
+    ListView pharmacyList;
+    ListView salesList;
+    CustomListAdapter pharmacyListAdapter;
+    CustomListAdapter salesListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,40 +46,37 @@ public class AdminActivity extends AppCompatActivity {
             startActivity(intent);
         }*/
 
-        host = (TabHost) findViewById(R.id.tabHost);
-        host.setup();
+        tabsSetup();
 
-        // tab 1
-        TabHost.TabSpec spec = host.newTabSpec("Farmacia");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Farmacia");
-        host.addTab(spec);
+        // Pharmacy list setup
+        pharmacyList = (ListView) findViewById(R.id.lvPharmacyOptions);
+        pharmacyListAdapter = new CustomListAdapter(this, pharmacyList());
+        pharmacyList.setAdapter(pharmacyListAdapter);
 
-        // tab 2
-        spec = host.newTabSpec("Ventas");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("Ventas");
-        host.addTab(spec);
+        // Sales list setup
+        salesList = (ListView) findViewById(R.id.lvSalesOptions);
+        salesListAdapter = new CustomListAdapter(this, salesList());
+        salesList.setAdapter(salesListAdapter);
 
-        // tab 3
-        spec = host.newTabSpec("Pacientes");
-        spec.setContent(R.id.tab3);
-        spec.setIndicator("Pacientes");
-        host.addTab(spec);
-
-        listView = (ListView) findViewById(R.id.lvPharmOptions);
-
-
-        listAdapter = new CustomListAdapter(this, generateData());
-
-        listView.setAdapter(listAdapter);
     }
 
-    private ArrayList<CustomListModel> generateData() {
+    private ArrayList<CustomListModel> pharmacyList() {
         ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
         //models.add(new CustomListModel("Acciones"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Ingresar inventario"));
         models.add(new CustomListModel(R.mipmap.ic_launcher, "Lista de medicinas"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte del dia"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Medicinas por agotarse"));
+        return models;
+    }
+
+    private ArrayList<CustomListModel> salesList() {
+        ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
+        //models.add(new CustomListModel("Acciones"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte al dia"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte mensual"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Productos + vendidos"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Productos - vendidos"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte personalizado"));
         return models;
     }
 
@@ -97,5 +96,28 @@ public class AdminActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void tabsSetup() {
+        host = (TabHost) findViewById(R.id.tabHost);
+        host.setup();
+
+        // tab 1
+        TabHost.TabSpec spec = host.newTabSpec("Farmacia");
+        spec.setContent(R.id.pharmacy_tab);
+        spec.setIndicator("Farmacia");
+        host.addTab(spec);
+
+        // tab 2
+        spec = host.newTabSpec("Ventas");
+        spec.setContent(R.id.sales_tab);
+        spec.setIndicator("Ventas");
+        host.addTab(spec);
+
+        // tab 3
+        spec = host.newTabSpec("Pacientes");
+        spec.setContent(R.id.px_tab);
+        spec.setIndicator("Pacientes");
+        host.addTab(spec);
     }
 }

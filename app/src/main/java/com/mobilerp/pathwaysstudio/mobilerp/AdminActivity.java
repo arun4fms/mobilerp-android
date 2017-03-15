@@ -22,11 +22,20 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TabHost;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AdminActivity extends AppCompatActivity {
 
     User user = User.getInstance();
+
+    TabHost host;
+    ListView listView;
+    ArrayAdapter<String> listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +46,18 @@ public class AdminActivity extends AppCompatActivity {
             startActivity(intent);
         }*/
 
-        TabHost host = (TabHost) findViewById(R.id.tabHost);
+        host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
+
+        listView = (ListView) findViewById(R.id.lvPharmOptions);
+
+        String[] options = new String[]{"Foo", "bar", "hello", "world"};
+        ArrayList<String> optList = new ArrayList<String>();
+        optList.addAll(Arrays.asList(options));
+
+        listAdapter = new ArrayAdapter<String>(this, R.layout.option_row, optList);
+
+        listView.setAdapter(listAdapter);
 
         // tab 1
         TabHost.TabSpec spec = host.newTabSpec("Farmacia");

@@ -43,10 +43,19 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
+
+                    <!--<TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Tab 1"/>
+                        android:text="Tab 1"/>-->
+
+                    <ListView
+                        android:id="@+id/lvPharmOptions"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </ListView>
+
                 </LinearLayout>
 
                 <LinearLayout

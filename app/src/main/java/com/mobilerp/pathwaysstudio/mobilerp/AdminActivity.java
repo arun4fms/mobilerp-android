@@ -65,19 +65,19 @@ public class AdminActivity extends AppCompatActivity {
         spec.setIndicator("Pacientes");
         host.addTab(spec);
 
-        //listView = (ListView) findViewById(R.id.lvPharmOptions);
+        listView = (ListView) findViewById(R.id.lvPharmOptions);
 
 
-        //listAdapter = new CustomListAdapter(this, generateData());
+        listAdapter = new CustomListAdapter(this, generateData());
 
-        //listView.setAdapter(listAdapter);
+        listView.setAdapter(listAdapter);
     }
 
     private ArrayList<CustomListModel> generateData() {
         ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
-        models.add(new CustomListModel("Acciones"));
-        models.add(new CustomListModel(R.drawable.medicine, "Lista de medicinas"));
-        models.add(new CustomListModel(R.drawable.money, "Corte del dia"));
+        //models.add(new CustomListModel("Acciones"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Lista de medicinas"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte del dia"));
         return models;
     }
 

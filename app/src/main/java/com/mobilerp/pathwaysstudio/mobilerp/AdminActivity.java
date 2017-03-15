@@ -22,12 +22,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -35,7 +33,7 @@ public class AdminActivity extends AppCompatActivity {
 
     TabHost host;
     ListView listView;
-    ArrayAdapter<String> listAdapter;
+    CustomListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +46,6 @@ public class AdminActivity extends AppCompatActivity {
 
         host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
-
-        listView = (ListView) findViewById(R.id.lvPharmOptions);
-
-        String[] options = new String[]{"Foo", "bar", "hello", "world"};
-        ArrayList<String> optList = new ArrayList<String>();
-        optList.addAll(Arrays.asList(options));
-
-        listAdapter = new ArrayAdapter<String>(this, R.layout.option_row, optList);
-
-        listView.setAdapter(listAdapter);
 
         // tab 1
         TabHost.TabSpec spec = host.newTabSpec("Farmacia");
@@ -76,6 +64,21 @@ public class AdminActivity extends AppCompatActivity {
         spec.setContent(R.id.tab3);
         spec.setIndicator("Pacientes");
         host.addTab(spec);
+
+        //listView = (ListView) findViewById(R.id.lvPharmOptions);
+
+
+        //listAdapter = new CustomListAdapter(this, generateData());
+
+        //listView.setAdapter(listAdapter);
+    }
+
+    private ArrayList<CustomListModel> generateData() {
+        ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
+        models.add(new CustomListModel("Acciones"));
+        models.add(new CustomListModel(R.drawable.medicine, "Lista de medicinas"));
+        models.add(new CustomListModel(R.drawable.money, "Corte del dia"));
+        return models;
     }
 
     @Override

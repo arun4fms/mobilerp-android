@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MobilERP</string>
+    <string name="title_activity_admin">Administración</string>
+    <string name="action_settings">Configuración</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="stock_input">Ingresar inventario</string>
+    <string name="drug_list">Lista de medicinas</string>
+    <string name="depleted_stock">Medicinas agotadas</string>
+    <string name="today_sales">Corte al día</string>
+    <string name="month_sales">Corte al mes</string>
+    <string name="most_sold_products">Productos + vendidos</string>
+    <string name="least_sold_products">Productos - vendidos</string>
+    <string name="custom_statement">Corte personalizado</string>
+    <string name="pharmacy">Farmacia</string>
+    <string name="sales">Ventas</string>
+    <string name="patients">Pacientes</string>
+</resources>

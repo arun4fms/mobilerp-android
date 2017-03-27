@@ -18,6 +18,7 @@
 
 package com.mobilerp.pathwaysstudio.mobilerp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -41,10 +42,10 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        /*if (!user.getIsLoginIn()) {
+        if (!user.getIsLoginIn()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-        }*/
+        }
 
         tabsSetup();
 
@@ -63,20 +64,28 @@ public class AdminActivity extends AppCompatActivity {
     private ArrayList<CustomListModel> pharmacyList() {
         ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
         //models.add(new CustomListModel("Acciones"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Ingresar inventario"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Lista de medicinas"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Medicinas por agotarse"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.stock_input)));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.drug_list)));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.depleted_stock)));
         return models;
     }
 
     private ArrayList<CustomListModel> salesList() {
         ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
         //models.add(new CustomListModel("Acciones"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte al dia"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte mensual"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Productos + vendidos"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Productos - vendidos"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, "Corte personalizado"));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.today_sales)));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.month_sales)));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.most_sold_products)));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.least_sold_products)));
+        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.custom_statement)));
         return models;
     }
 

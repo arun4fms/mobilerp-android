@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">MobilERP</string>
-    <string name="title_activity_admin">adminActivity</string>
+    <string name="title_activity_admin">Management</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="stock_input">Update stock</string>
+    <string name="drug_list">List of products</string>
+    <string name="depleted_stock">Depleted products</string>
+    <string name="today_sales">Today\'s statement</string>
+    <string name="month_sales">Monthly statement</string>
+    <string name="most_sold_products">Most sold products</string>
+    <string name="least_sold_products">Least sold products</string>
+    <string name="custom_statement">Custom statement</string>
+    <string name="pharmacy">Drugstore</string>
+    <string name="sales">Sales</string>
+    <string name="patients">Patients</string>
 </resources>

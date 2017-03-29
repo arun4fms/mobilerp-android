@@ -21,7 +21,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="30dp"
-        android:text="Usuario"
+        android:text="@string/user"
         android:textAlignment="center"
         android:textSize="24sp"/>
 
@@ -35,7 +35,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView"
         android:layout_marginTop="13dp"
-        android:contentDescription="Ingrese su nombre de usuario"
+        android:contentDescription="@string/user_hint"
         android:ems="10"
         android:inputType="textPersonName"
         android:selectAllOnFocus="true"/>
@@ -50,7 +50,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/editText"
         android:layout_marginTop="23dp"
-        android:text="Contraseña"
+        android:text="@string/pass"
         android:textAlignment="center"
         android:textSize="24sp"/>
 
@@ -64,7 +64,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="25dp"
-        android:contentDescription="Ingrese su contraseña"
+        android:contentDescription="@string/pass_hint"
         android:ems="10"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"/>
@@ -80,6 +80,6 @@
         android:layout_below="@+id/editText2"
         android:layout_marginTop="27dp"
         android:onClick="checkLogin"
-        android:text="Entrar"/>
+        android:text="@string/login"/>
 
 </RelativeLayout>

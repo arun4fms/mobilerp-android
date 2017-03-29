@@ -23,8 +23,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,8 +38,8 @@ public class AdminActivity extends AppCompatActivity {
     TabHost host;
     ListView pharmacyList;
     ListView salesList;
-    CustomListAdapter pharmacyListAdapter;
-    CustomListAdapter salesListAdapter;
+    OptionListAdapter pharmacyListAdapter;
+    OptionListAdapter salesListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,41 +54,59 @@ public class AdminActivity extends AppCompatActivity {
 
         // Pharmacy list setup
         pharmacyList = (ListView) findViewById(R.id.lvPharmacyOptions);
-        pharmacyListAdapter = new CustomListAdapter(this, pharmacyList());
+        pharmacyListAdapter = new OptionListAdapter(this, pharmacyList());
         pharmacyList.setAdapter(pharmacyListAdapter);
+        pharmacyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        Toast.makeText(getApplicationContext(), "HURR " + position,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Toast.makeText(getApplicationContext(), "DURRR " + position,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(getApplicationContext(), "DERP " + position,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), "DAYUM " + position,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+
 
         // Sales list setup
         salesList = (ListView) findViewById(R.id.lvSalesOptions);
-        salesListAdapter = new CustomListAdapter(this, salesList());
+        salesListAdapter = new OptionListAdapter(this, salesList());
         salesList.setAdapter(salesListAdapter);
 
     }
 
-    private ArrayList<CustomListModel> pharmacyList() {
-        ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
-        //models.add(new CustomListModel("Acciones"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.stock_input)));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.drug_list)));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.depleted_stock)));
+    private ArrayList<OptionListModel> pharmacyList() {
+        ArrayList<OptionListModel> models = new ArrayList<OptionListModel>();
+        //models.add(new OptionListModel("Acciones"));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.stock_input)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.drug_list)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.depleted_stock)));
+
         return models;
     }
 
-    private ArrayList<CustomListModel> salesList() {
-        ArrayList<CustomListModel> models = new ArrayList<CustomListModel>();
-        //models.add(new CustomListModel("Acciones"));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.today_sales)));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.month_sales)));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.most_sold_products)));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.least_sold_products)));
-        models.add(new CustomListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.custom_statement)));
+    private ArrayList<OptionListModel> salesList() {
+        ArrayList<OptionListModel> models = new ArrayList<OptionListModel>();
+        //models.add(new OptionListModel("Acciones"));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.today_sales)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.month_sales)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.most_sold_products)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.least_sold_products)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.custom_statement)));
+
         return models;
     }
 
@@ -112,21 +133,21 @@ public class AdminActivity extends AppCompatActivity {
         host.setup();
 
         // tab 1
-        TabHost.TabSpec spec = host.newTabSpec("Farmacia");
+        TabHost.TabSpec spec = host.newTabSpec(this.getResources().getString(R.string.pharmacy));
         spec.setContent(R.id.pharmacy_tab);
-        spec.setIndicator("Farmacia");
+        spec.setIndicator(this.getResources().getString(R.string.pharmacy));
         host.addTab(spec);
 
         // tab 2
-        spec = host.newTabSpec("Ventas");
+        spec = host.newTabSpec(this.getResources().getString(R.string.sales));
         spec.setContent(R.id.sales_tab);
-        spec.setIndicator("Ventas");
+        spec.setIndicator(this.getResources().getString(R.string.sales));
         host.addTab(spec);
 
         // tab 3
-        spec = host.newTabSpec("Pacientes");
+        spec = host.newTabSpec(this.getResources().getString(R.string.patients));
         spec.setContent(R.id.px_tab);
-        spec.setIndicator("Pacientes");
+        spec.setIndicator(this.getResources().getString(R.string.sales));
         host.addTab(spec);
     }
 }

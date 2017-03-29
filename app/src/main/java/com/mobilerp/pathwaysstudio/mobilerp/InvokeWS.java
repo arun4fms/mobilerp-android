@@ -52,7 +52,7 @@ public class InvokeWS {
      * TODO: Find a way to make this configurable, preferebly autoconfig
      */
     //String baseURL = "http://192.168.1.75:5000/mobilerp/api/v1.0/";
-    String baseURL = "http://192.168.0.105:5000/mobilerp/api/v1.0/";
+    String baseURL = "http://192.168.0.108:5000/mobilerp/api/v1.0/";
     /**
      * Client used by all request.
      */
@@ -93,7 +93,7 @@ public class InvokeWS {
         });
     }
 
-    // List all the products in the WebService
+    // List all the products in the Database
     public void listProducts(RequestResponse rR) {
         final RequestResult rs = new RequestResult();
         final RequestResponse requestResponse = rR;

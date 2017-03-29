@@ -28,12 +28,12 @@ import java.util.ArrayList;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class CustomListAdapter extends ArrayAdapter<CustomListModel> {
+public class OptionListAdapter extends ArrayAdapter<OptionListModel> {
 
     private final Context contx;
-    private final ArrayList<CustomListModel> modelsArrayList;
+    private final ArrayList<OptionListModel> modelsArrayList;
 
-    public CustomListAdapter(Context context, ArrayList<CustomListModel> modelsArrayList) {
+    public OptionListAdapter(Context context, ArrayList<OptionListModel> modelsArrayList) {
         super(context, R.layout.option_row, modelsArrayList);
         this.contx = context;
         this.modelsArrayList = modelsArrayList;

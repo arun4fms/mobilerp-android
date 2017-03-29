@@ -14,4 +14,9 @@
     <string name="pharmacy">Drugstore</string>
     <string name="sales">Sales</string>
     <string name="patients">Patients</string>
+    <string name="user">Username</string>
+    <string name="pass">Password</string>
+    <string name="user_hint">Input your username</string>
+    <string name="pass_hint">Input your password</string>
+    <string name="login">Login</string>
 </resources>

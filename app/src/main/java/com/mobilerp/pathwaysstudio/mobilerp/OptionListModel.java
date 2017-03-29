@@ -18,18 +18,18 @@ package com.mobilerp.pathwaysstudio.mobilerp;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class CustomListModel {
+public class OptionListModel {
     private int icon;
     private String title;
 
     private boolean isGroupHeader = false;
 
-    public CustomListModel(String title) {
+    public OptionListModel(String title) {
         this(-1, title);
         isGroupHeader = true;
     }
 
-    public CustomListModel(int icon, String title) {
+    public OptionListModel(int icon, String title) {
         super();
         this.setIcon(icon);
         this.setTitle(title);

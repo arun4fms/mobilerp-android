@@ -19,4 +19,62 @@ package com.mobilerp.pathwaysstudio.mobilerp;
  */
 
 public class ItemListModel {
+
+    private String name;
+    private float price;
+    private int total;
+
+    private boolean isGroupHeader = false;
+
+    public ItemListModel(String title) {
+        this(title, 0f, 0);
+        this.setIsGroupHeader(true);
+    }
+
+    public ItemListModel(String name, float price, int total) {
+        super();
+        this.setName(name);
+        this.setPrice(price);
+        this.setTotal(total);
+    }
+
+    public boolean getIsGroupHeader() {
+        return isGroupHeader();
+    }
+
+    public void setIsGroupHeader(boolean groupHeader) {
+        this.isGroupHeader = groupHeader;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public String getPriceString() {
+        return String.valueOf(price);
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public boolean isGroupHeader() {
+        return isGroupHeader;
+    }
 }

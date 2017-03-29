@@ -21,7 +21,7 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 public class User {
 
     private static User instance = null;
-    private boolean isLoginIn = false;
+    private boolean isLoggedIn = false;
     private String name = "";
     private String pass = "";
 
@@ -37,11 +37,11 @@ public class User {
     }
 
     public boolean getIsLoginIn() {
-        return isLoginIn;
+        return isLoggedIn;
     }
 
     public void setIsLoginIn(boolean isLoginIn) {
-        this.isLoginIn = isLoginIn;
+        this.isLoggedIn = isLoginIn;
     }
 
     public String getName() {

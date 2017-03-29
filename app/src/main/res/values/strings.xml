@@ -19,4 +19,6 @@
     <string name="user_hint">Input your username</string>
     <string name="pass_hint">Input your password</string>
     <string name="login">Login</string>
+    <string name="success">Sucess</string>
+    <string name="fail">Failed</string>
 </resources>

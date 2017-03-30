@@ -13,7 +13,7 @@ public class DisplayItems extends AppCompatActivity {
     ListView itemList;
     ItemListAdapter itemListAdapter;
     InvokeWS ws;
-    RequestResult result;
+    //RequestResult result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,21 +24,27 @@ public class DisplayItems extends AppCompatActivity {
 
         ws = new InvokeWS();
         String endpoint = getIntent().getStringExtra("ENDPOINT");
-
-        Toast.makeText(this, R.string.wait_string, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, R.string.wait_string + " " + endpoint, Toast.LENGTH_SHORT).show();
 
         if (endpoint == "LISTPRODUCTS")
             ws.listProducts(new RequestResponse() {
                 @Override
                 public void onResponseReceived(RequestResult result) {
-                    if (result.getCodeResult() == 200) {
-                        Toast.makeText(context, context.getResources().getString(R.string
-                                .success), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(context, result.getStringResult(),
+                            Toast.LENGTH_LONG).show();
+                    /*if (result.getCodeResult() == 200) {
+                        Toast.makeText(context, context.getResources().getString(R.string.success),
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(context, context.getResources().getString(R.string.fail), Toast.LENGTH_LONG).show();
+                        finish();
+                    }*/
                 }
             });
 
         itemList = (ListView) findViewById(R.id.itemList);
+
     }
 
 //    private ArrayList<ItemListModel> putItemsInList(){

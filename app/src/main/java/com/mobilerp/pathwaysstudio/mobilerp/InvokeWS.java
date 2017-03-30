@@ -41,14 +41,18 @@ public class InvokeWS {
      */
     final String findProduct = "findProduct/";
     /**
-     * List all product enpoint
+     * List all product endpoint
      */
     final String listProducts = "listProducts/";
     /**
-     * Check Login enpoint
+     * Check Login endpoint
      */
     final String checkLogin = "user/checkLogin/";
     final String WAIT_STRING = "Espere un momento...";
+    /**
+     * User info
+     */
+    User user;
     /**
      * Base URL
      * TODO: Find a way to make this configurable, preferebly autoconfig
@@ -60,6 +64,10 @@ public class InvokeWS {
      */
     AsyncHttpClient client;
 
+    public InvokeWS() {
+        user = User.getInstance();
+    }
+
     /**
      * Finds a product in the Web Service
      */
@@ -68,7 +76,7 @@ public class InvokeWS {
         final RequestResponse requestResponse = rR;
         rs.setStringResult(WAIT_STRING);
         client = new AsyncHttpClient();
-        client.setBasicAuth("carlo", "123");
+        client.setBasicAuth(user.getName(), user.getName());
         client.get(baseURL + findProduct + barcode, new AsyncHttpResponseHandler
                 () {
 
@@ -101,7 +109,7 @@ public class InvokeWS {
         final RequestResponse requestResponse = rR;
         rs.setStringResult(WAIT_STRING);
         client = new AsyncHttpClient();
-        client.setBasicAuth("carlo", "123");
+        client.setBasicAuth(user.getName(), user.getName());
         client.get(baseURL + listProducts, new AsyncHttpResponseHandler
                 () {
             @Override

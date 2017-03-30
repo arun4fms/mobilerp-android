@@ -46,10 +46,13 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        if (!user.getIsLoginIn()) {
+        /*if (!user.getIsLoginIn()) {
             Intent intent = new Intent(context, LoginActivity.class);
             startActivity(intent);
-        }
+        }*/
+
+        user.setName("carlo");
+        user.setName("123");
 
         tabsSetup();
 

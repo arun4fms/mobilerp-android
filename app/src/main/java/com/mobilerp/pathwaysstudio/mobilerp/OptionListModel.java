@@ -21,18 +21,20 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 public class OptionListModel {
     private int icon;
     private String title;
+    private String endpoint;
 
     private boolean isGroupHeader = false;
 
     public OptionListModel(String title) {
-        this(-1, title);
+        this(-1, title, "");
         isGroupHeader = true;
     }
 
-    public OptionListModel(int icon, String title) {
+    public OptionListModel(int icon, String title, String endpoint) {
         super();
         this.setIcon(icon);
         this.setTitle(title);
+        this.setEndpoint(endpoint);
     }
 
     public boolean getIsGroupHeader() {
@@ -57,5 +59,13 @@ public class OptionListModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 }

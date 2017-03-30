@@ -57,12 +57,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponseReceived(RequestResult result) {
                 if (result.getCodeResult() == 200) {
-                    Toast.makeText(contx, "Exito",Toast.LENGTH_LONG).show();
+                    Toast.makeText(contx, contx.getResources().getString(R.string.success), Toast.LENGTH_LONG).show();
                     pd.dismiss();
                     finish();
                 } else {
                     pd.dismiss();
-                    Toast.makeText(contx, "Fallo", Toast.LENGTH_LONG).show();
+                    Toast.makeText(contx, contx.getResources().getString(R.string.fail), Toast.LENGTH_LONG).show();
                 }
             }
         });

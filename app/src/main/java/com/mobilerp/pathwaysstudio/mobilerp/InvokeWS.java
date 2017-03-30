@@ -18,6 +18,8 @@
 
 package com.mobilerp.pathwaysstudio.mobilerp;
 
+import android.content.res.Resources;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -51,8 +53,8 @@ public class InvokeWS {
      * Base URL
      * TODO: Find a way to make this configurable, preferebly autoconfig
      */
-    //String baseURL = "http://192.168.1.75:5000/mobilerp/api/v1.0/";
-    String baseURL = "http://192.168.0.108:5000/mobilerp/api/v1.0/";
+    String baseURL = "http://192.168.1.75:5000/mobilerp/api/v1.0/";
+    //String baseURL = "http://192.168.0.108:5000/mobilerp/api/v1.0/";
     /**
      * Client used by all request.
      */
@@ -180,14 +182,14 @@ public class InvokeWS {
 
     private String CheckWSError(int responseCode) {
         if (responseCode == 404) {
-            return "Elemento no encontrado";
+            return Resources.getSystem().getString(R.string._404_not_found);
         }
         if (responseCode == 401) {
-            return "Acceso Denegado";
+            return Resources.getSystem().getString(R.string._401_access_denied);
         }
         if (responseCode == 500) {
-            return "Error del servidor";
+            return Resources.getSystem().getString(R.string._500_server_error);
         }
-        return "Error desconocido del servidor" + Integer.toString(responseCode);
+        return Resources.getSystem().getString(R.string.unknown_server_error) + Integer.toString(responseCode);
     }
 }

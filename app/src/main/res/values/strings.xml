@@ -19,6 +19,12 @@
     <string name="user_hint">Input your username</string>
     <string name="pass_hint">Input your password</string>
     <string name="login">Login</string>
-    <string name="success">Sucess</string>
+    <string name="success">Success</string>
     <string name="fail">Failed</string>
+    <string name="_404_not_found">Item not found</string>
+    <string name="_500_server_error">Server error</string>
+    <string name="_401_access_denied">Access denied</string>
+    <string name="unknown_server_error">Unknown server error</string>
+    <string name="title_activity_display_items">List of items</string>
+    <string name="wait_string">"Please wait..."</string>
 </resources>

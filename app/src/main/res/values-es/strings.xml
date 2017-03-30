@@ -4,7 +4,7 @@
     <string name="action_settings">Configuración</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="stock_input">Ingresar inventario</string>
-    <string name="drug_list">Lista de medicinas</string>
+    <string name="drug_list">Lista de articulos</string>
     <string name="depleted_stock">Medicinas agotadas</string>
     <string name="today_sales">Corte al día</string>
     <string name="month_sales">Corte al mes</string>
@@ -21,4 +21,10 @@
     <string name="login">Entrar</string>
     <string name="success">Éxito</string>
     <string name="fail">Falló</string>
+    <string name="_404_not_found">Elemento no encontrado</string>
+    <string name="_500_server_error">Error del servidor</string>
+    <string name="_401_access_denied">Acceso denegado</string>
+    <string name="unknown_server_error">Error desconocido del servidor</string>
+    <string name="title_activity_display_items">Lista de articulos</string>
+    <string name="wait_string">"Espere un momento..."</string>
 </resources>

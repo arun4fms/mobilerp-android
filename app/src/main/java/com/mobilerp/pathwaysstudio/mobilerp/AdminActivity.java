@@ -18,6 +18,7 @@
 
 package com.mobilerp.pathwaysstudio.mobilerp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,8 +34,8 @@ import java.util.ArrayList;
 
 public class AdminActivity extends AppCompatActivity {
 
+    final Context context = this;
     User user = User.getInstance();
-
     TabHost host;
     ListView pharmacyList;
     ListView salesList;
@@ -46,7 +47,7 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         if (!user.getIsLoginIn()) {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(context, LoginActivity.class);
             startActivity(intent);
         }
 
@@ -65,8 +66,10 @@ public class AdminActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(getApplicationContext(), "DURRR " + position,
-                                Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, DisplayItems.class);
+                        intent.putExtra("ENDPOINT", pharmacyListAdapter.getItem(position)
+                                .getEndpoint());
+                        startActivity(intent);
                         break;
                     case 2:
                         Toast.makeText(getApplicationContext(), "DERP " + position,
@@ -91,9 +94,10 @@ public class AdminActivity extends AppCompatActivity {
     private ArrayList<OptionListModel> pharmacyList() {
         ArrayList<OptionListModel> models = new ArrayList<OptionListModel>();
         //models.add(new OptionListModel("Acciones"));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.stock_input)));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.drug_list)));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.depleted_stock)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.stock_input), ""));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.drug_list), "LISTPRODUCTS"));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.depleted_stock), ""));
 
         return models;
     }
@@ -101,11 +105,12 @@ public class AdminActivity extends AppCompatActivity {
     private ArrayList<OptionListModel> salesList() {
         ArrayList<OptionListModel> models = new ArrayList<OptionListModel>();
         //models.add(new OptionListModel("Acciones"));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.today_sales)));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.month_sales)));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.most_sold_products)));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.least_sold_products)));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.custom_statement)));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.today_sales), ""));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.month_sales), ""));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R
+                .string.most_sold_products), ""));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.least_sold_products), ""));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.custom_statement), ""));
 
         return models;
     }
@@ -147,7 +152,7 @@ public class AdminActivity extends AppCompatActivity {
         // tab 3
         spec = host.newTabSpec(this.getResources().getString(R.string.patients));
         spec.setContent(R.id.px_tab);
-        spec.setIndicator(this.getResources().getString(R.string.sales));
+        spec.setIndicator(this.getResources().getString(R.string.patients));
         host.addTab(spec);
     }
 }

@@ -18,11 +18,16 @@
 
 package com.mobilerp.pathwaysstudio.mobilerp;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
 
     private static User instance = null;
+    @SerializedName("logged")
     private boolean isLoggedIn = false;
+    @SerializedName("user")
     private String name = "";
+    @SerializedName("pass")
     private String pass = "";
 
     protected User() {

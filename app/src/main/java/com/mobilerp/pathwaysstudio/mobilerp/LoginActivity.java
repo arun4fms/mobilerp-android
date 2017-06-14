@@ -20,10 +20,16 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,7 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     private final String TAG = "Revisando credenciales";
     Context contx;
     ProgressDialog pd;
-    InvokeWS ws;
+    APIInterface apiInterface;
+    EditText user_txt;
+    EditText pass_txt;
 
     public LoginActivity() {
 
@@ -44,27 +52,35 @@ public class LoginActivity extends AppCompatActivity {
         //get context
         contx = this;
         pd = new ProgressDialog(contx, ProgressDialog.STYLE_SPINNER);
-        ws = new InvokeWS();
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+        user_txt = (EditText) findViewById(R.id.editText);
+        pass_txt = (EditText) findViewById(R.id.editText2);
     }
 
     public void checkLogin(View view){
-        User user = User.getInstance();
-        user.setName("carlo");
-        user.setPass("123");
-        pd.setMessage(TAG);
-        pd.show();
-        ws.checkLogin(user, new RequestResponse() {
+        final User user = User.getInstance();
+        user.setName(user_txt.getText().toString());
+        user.setPass(pass_txt.getText().toString());
+        Call call = apiInterface.checkUser(user);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponseReceived(RequestResult result) {
-                if (result.getCodeResult() == 200) {
-                    Toast.makeText(contx, contx.getResources().getString(R.string.success), Toast.LENGTH_LONG).show();
-                    pd.dismiss();
-                    finish();
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == 200) {
+                    Toast.makeText(contx, R.string.success, Toast.LENGTH_LONG).show();
+                    user.setIsLoginIn(true);
+                    Intent intent = new Intent(contx, AdminActivity.class);
+                    startActivity(intent);
                 } else {
-                    pd.dismiss();
-                    Toast.makeText(contx, contx.getResources().getString(R.string.fail), Toast.LENGTH_LONG).show();
+                    Toast.makeText(contx, R.string._401_access_denied, Toast.LENGTH_LONG).show();
                 }
             }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Toast.makeText(contx, R.string._500_server_error, Toast.LENGTH_LONG).show();
+            }
         });
+        /*pd.setMessage(TAG);
+        pd.show();*/
     }
 }

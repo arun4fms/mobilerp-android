@@ -18,17 +18,16 @@
 
 package com.mobilerp.pathwaysstudio.mobilerp;
 
-import com.google.gson.annotations.SerializedName;
+import android.util.Base64;
 
 public class User {
 
     private static User instance = null;
-    @SerializedName("logged")
     private boolean isLoggedIn = false;
-    @SerializedName("user")
     private String name = "";
-    @SerializedName("pass")
     private String pass = "";
+
+    private String authString = "";
 
     protected User() {
 
@@ -55,6 +54,7 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+        this.setAuthString();
     }
 
     public String getPass() {
@@ -63,5 +63,18 @@ public class User {
 
     public void setPass(String pass) {
         this.pass = pass;
+        this.setAuthString();
+    }
+
+    public void setAuthString() {
+        String loginEncoded = new String(Base64.encode((name + ":" + pass).getBytes(),
+                Base64.NO_WRAP));
+        authString = "Basic " + loginEncoded;
+    }
+
+    public String getAuthString() {
+        if (authString.isEmpty())
+            this.setAuthString();
+        return authString;
     }
 }

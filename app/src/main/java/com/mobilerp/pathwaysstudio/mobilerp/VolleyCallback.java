@@ -1,11 +1,11 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
 
 /**
- * Created by Eligio Becerra on 13/06/2017.
+ * Created by Eligio Becerra on 15/06/2017.
  * Copyright (C) 2017 Eligio Becerra
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,8 @@ import retrofit2.http.POST;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public interface APIInterface {
-    @POST("/mobilerp/api/v1.0/user/checkLogin/")
-    Call<User> checkUser(@Body User user);
+public interface VolleyCallback {
+    void onSuccessResponse(JSONObject result);
+
+    void onFailure(VolleyError error);
 }

@@ -67,11 +67,13 @@ public class AdminActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        Toast.makeText(getApplicationContext(), "HURR " + position,
-                                Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, BarcodeScanner.class);
+                        intent.putExtra("ENDPOINT", pharmacyListAdapter.getItem(position)
+                                .getEndpoint());
+                        startActivity(intent);
                         break;
                     case 1:
-                        Intent intent = new Intent(context, DisplayItems.class);
+                        intent = new Intent(context, DisplayItems.class);
                         intent.putExtra("ENDPOINT", pharmacyListAdapter.getItem(position)
                                 .getEndpoint());
                         startActivity(intent);
@@ -102,7 +104,7 @@ public class AdminActivity extends AppCompatActivity {
         ArrayList<OptionListModel> models = new ArrayList<OptionListModel>();
         //models.add(new OptionListModel("Acciones"));
         models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R
-                .string.stock_input), ""));
+                .string.stock_input), "UPDATESTOCK"));
         models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.drug_list), "LISTPRODUCTS"));
         models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.depleted_stock), "LISTDEPLETED"));
 

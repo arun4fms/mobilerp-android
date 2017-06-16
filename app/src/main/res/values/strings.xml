@@ -30,4 +30,5 @@
     <string name="item_name">Item</string>
     <string name="item_price">Price</string>
     <string name="item_total">Total units</string>
+    <string name="title_activity_barcode_scanner">BarcodeScanner</string>
 </resources>

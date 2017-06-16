@@ -77,8 +77,10 @@ public class AdminActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case 2:
-                        Toast.makeText(getApplicationContext(), "DERP " + position,
-                                Toast.LENGTH_SHORT).show();
+                        intent = new Intent(context, DisplayItems.class);
+                        intent.putExtra("ENDPOINT", pharmacyListAdapter.getItem(position)
+                                .getEndpoint());
+                        startActivity(intent);
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), "DAYUM " + position,
@@ -102,7 +104,7 @@ public class AdminActivity extends AppCompatActivity {
         models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R
                 .string.stock_input), ""));
         models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.drug_list), "LISTPRODUCTS"));
-        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.depleted_stock), ""));
+        models.add(new OptionListModel(R.mipmap.ic_launcher, this.getResources().getString(R.string.depleted_stock), "LISTDEPLETED"));
 
         return models;
     }

@@ -35,31 +35,57 @@ public class DisplayItems extends AppCompatActivity {
         //Toast.makeText(this, R.string.wait_string + " " + endpoint, Toast.LENGTH_SHORT).show();
 
         if (endpoint.equals("LISTPRODUCTS")) {
-            String url = APIServer.BASE_URL + APIServer.LIST_PRODUCTS;
-            apiServer.getResponse(Request.Method.GET, url, null, new VolleyCallback() {
-                @Override
-                public void onSuccessResponse(JSONObject result) {
-                    try {
-                        JSONArray _itms = result.getJSONArray("mobilerp");
-                        for (int i = 0; i < _itms.length(); i++) {
-                            JSONObject _itm = _itms.getJSONObject(i);
-                            //name, price, total
-                            items.add(new ItemListModel(_itm.getString("name"), _itm.getDouble("price"), _itm.getInt("units")));
-                        }
-                        itemList = (ListView) findViewById(R.id.itemList);
-                        itemListAdapter = new ItemListAdapter(context, items);
-                        itemList.setAdapter(itemListAdapter);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+           listProducts();
+        }
+        if (endpoint.equals("LISTDEPLETED")){
+            listDepleted();
         }
     }
 
-    private void setItemListContent() {
-        //Set up List
+    private void listProducts() {
+        String url = APIServer.BASE_URL + APIServer.LIST_PRODUCTS;
+        apiServer.getResponse(Request.Method.GET, url, null, new VolleyCallback() {
+            @Override
+            public void onSuccessResponse(JSONObject result) {
+                try {
+                    items.add(new ItemListModel("title"));
+                    JSONArray _itms = result.getJSONArray("mobilerp");
+                    for (int i = 0; i < _itms.length(); i++) {
+                        JSONObject _itm = _itms.getJSONObject(i);
+                        //name, price, total
+                        items.add(new ItemListModel(_itm.getString("name"), _itm.getDouble("price"), _itm.getInt("units")));
+                    }
+                    itemList = (ListView) findViewById(R.id.itemList);
+                    itemListAdapter = new ItemListAdapter(context, items);
+                    itemList.setAdapter(itemListAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
+    public void listDepleted(){
+        String url = APIServer.BASE_URL + APIServer.LIST_DEPLETED;
+        apiServer.getResponse(Request.Method.GET, url, null, new VolleyCallback() {
+            @Override
+            public void onSuccessResponse(JSONObject result) {
+                try {
+                    items.add(new ItemListModel("title"));
+                    JSONArray _itms = result.getJSONArray("mobilerp");
+                    for (int i = 0; i < _itms.length(); i++) {
+                        JSONObject _itm = _itms.getJSONObject(i);
+                        //name, price, total
+                        items.add(new ItemListModel(_itm.getString("name"), _itm.getDouble("price"), _itm.getInt("units")));
+                    }
+                    itemList = (ListView) findViewById(R.id.itemList);
+                    itemListAdapter = new ItemListAdapter(context, items);
+                    itemList.setAdapter(itemListAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 //    private ArrayList<ItemListModel> putItemsInList(){

@@ -70,6 +70,10 @@ public class ItemListModel {
         return total;
     }
 
+    public String getTotalString() {
+        return total.toString();
+    }
+
     public void setTotal(Integer total) {
         this.total = total;
     }

@@ -53,7 +53,7 @@ public class ItemListAdapter extends ArrayAdapter<ItemListModel> {
 
             itemNameView.setText(modelsArrayList.get(position).getName());
             itemPriceView.setText(modelsArrayList.get(position).getPriceString());
-            itemTotalView.setText(modelsArrayList.get(position).getTotal());
+            itemTotalView.setText(modelsArrayList.get(position).getTotal().toString());
         } else {
             rowView = inflater.inflate(R.layout.list_header, parent, false);
             TextView titleView = (TextView) rowView.findViewById(R.id.listTitle);

@@ -21,17 +21,17 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 public class ItemListModel {
 
     private String name;
-    private float price;
-    private int total;
+    private Double price;
+    private Integer total;
 
     private boolean isGroupHeader = false;
 
     public ItemListModel(String title) {
-        this(title, 0f, 0);
+        this(title, 0.0, 0);
         this.setIsGroupHeader(true);
     }
 
-    public ItemListModel(String name, float price, int total) {
+    public ItemListModel(String name, Double price, Integer total) {
         super();
         this.setName(name);
         this.setPrice(price);
@@ -54,23 +54,23 @@ public class ItemListModel {
         this.name = name;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getPriceString() {
         return String.valueOf(price);
     }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public int getTotal() {
+    public Integer getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(Integer total) {
         this.total = total;
     }
 

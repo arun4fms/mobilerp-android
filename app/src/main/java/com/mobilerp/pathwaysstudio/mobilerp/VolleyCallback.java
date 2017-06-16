@@ -1,7 +1,5 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
-import com.android.volley.VolleyError;
-
 import org.json.JSONObject;
 
 /**
@@ -24,6 +22,4 @@ import org.json.JSONObject;
 
 public interface VolleyCallback {
     void onSuccessResponse(JSONObject result);
-
-    void onFailure(VolleyError error);
 }

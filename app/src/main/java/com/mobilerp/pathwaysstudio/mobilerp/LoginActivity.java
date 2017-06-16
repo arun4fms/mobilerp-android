@@ -27,9 +27,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +36,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     private final String TAG = "Revisando credenciales";
-    Context contx;
+    Context context;
     ProgressDialog pd;
     APIServer apiServer;
     EditText user_txt;
@@ -53,48 +51,33 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //get context
-        contx = this;
-        pd = new ProgressDialog(contx, ProgressDialog.STYLE_SPINNER);
-        //apiInterface = APIClient.getClient().create(APIInterface.class);
+        context = this;
+        pd = new ProgressDialog(context, ProgressDialog.STYLE_SPINNER);
         user_txt = (EditText) findViewById(R.id.editText);
         pass_txt = (EditText) findViewById(R.id.editText2);
         user = User.getInstance();
-        apiServer = new APIServer(contx);
+        apiServer = new APIServer(context);
     }
 
     public void checkLogin(View view){
         user.setName(user_txt.getText().toString());
         user.setPass(pass_txt.getText().toString());
         String url = APIServer.BASE_URL + APIServer.LOGIN;
-        apiServer.getResponse(Request.Method.GET, url, new JSONObject(), new
+        apiServer.getResponse(Request.Method.GET, url, null, new
                 VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
                 try {
                     if (result.getBoolean("logged")) {
                         user.setIsLoginIn(true);
-                        Toast.makeText(contx, R.string.success, Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(contx, AdminActivity.class);
+                        Toast.makeText(context, R.string.success, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(context, AdminActivity.class);
                         startActivity(intent);
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(contx, R.string.fail, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(VolleyError error) {
-                NetworkResponse response = error.networkResponse;
-                if (response != null) {
-                    if (response.statusCode == 401)
-                        Toast.makeText(contx, R.string._401_access_denied, Toast.LENGTH_LONG).show();
-                    if (response.statusCode == 500)
-                        Toast.makeText(contx, R.string._500_server_error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.fail, Toast.LENGTH_LONG).show();
                 }
             }
         });
-        /*pd.setMessage(TAG);
-        pd.show();*/
     }
 }

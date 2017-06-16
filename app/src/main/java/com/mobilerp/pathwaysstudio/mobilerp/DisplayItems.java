@@ -6,13 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class DisplayItems extends AppCompatActivity {
 
     final Context context = this;
     ListView itemList;
     ItemListAdapter itemListAdapter;
-    //APIServer ws;
-    //RequestResult result;
+    ArrayList<ItemListModel> items;
+    APIServer apiServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,30 +29,37 @@ public class DisplayItems extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //ws = new APIServer();
+        apiServer = new APIServer(context);
         String endpoint = getIntent().getStringExtra("ENDPOINT");
+        items = new ArrayList<>();
         //Toast.makeText(this, R.string.wait_string + " " + endpoint, Toast.LENGTH_SHORT).show();
-/*
-        if (endpoint == "LISTPRODUCTS")
-            ws.listProducts(new RequestResponse() {
+
+        if (endpoint.equals("LISTPRODUCTS")) {
+            String url = APIServer.BASE_URL + APIServer.LIST_PRODUCTS;
+            apiServer.getResponse(Request.Method.GET, url, null, new VolleyCallback() {
                 @Override
-                public void onResponseReceived(RequestResult result) {
-                    Toast.makeText(context, result.getStringResult(),
-                            Toast.LENGTH_LONG).show();
-                    *//*if (result.getCodeResult() == 200) {
-                        Toast.makeText(context, context.getResources().getString(R.string.success),
-                                Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        Toast.makeText(context, context.getResources().getString(R.string.fail), Toast.LENGTH_LONG).show();
-                        finish();
-                    }*//*
+                public void onSuccessResponse(JSONObject result) {
+                    try {
+                        JSONArray _itms = result.getJSONArray("mobilerp");
+                        for (int i = 0; i < _itms.length(); i++) {
+                            JSONObject _itm = _itms.getJSONObject(i);
+                            //name, price, total
+                            items.add(new ItemListModel(_itm.getString("name"), _itm.getDouble("price"), _itm.getInt("units")));
+                        }
+                        itemList = (ListView) findViewById(R.id.itemList);
+                        itemListAdapter = new ItemListAdapter(context, items);
+                        itemList.setAdapter(itemListAdapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
+        }
+    }
 
-        itemList = (ListView) findViewById(R.id.itemList);
+    private void setItemListContent() {
+        //Set up List
 
-    }*/
     }
 
 //    private ArrayList<ItemListModel> putItemsInList(){

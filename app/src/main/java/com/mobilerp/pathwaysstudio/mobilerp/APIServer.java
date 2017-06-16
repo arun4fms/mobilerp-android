@@ -2,7 +2,9 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -35,6 +37,8 @@ public class APIServer {
     //public static final String BASE_URL = "http://192.168.1.70:5000/";
     public static final String BASE_URL = "http://192.168.0.108:5000/";
     public static final String LOGIN = "mobilerp/api/v1.0/user/checkLogin/";
+    public static final String LIST_PRODUCTS = "mobilerp/api/v1.0/listProducts/";
+
     final static User USER = User.getInstance();
     Context context;
     private VolleySingleton queue;
@@ -57,7 +61,13 @@ public class APIServer {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                callback.onFailure(error);
+                NetworkResponse response = error.networkResponse;
+                if (response != null) {
+                    if (response.statusCode == 401)
+                        Toast.makeText(context, R.string._401_access_denied, Toast.LENGTH_LONG).show();
+                    if (response.statusCode == 500)
+                        Toast.makeText(context, R.string._500_server_error, Toast.LENGTH_LONG).show();
+                }
             }
         })
                 //set headers

@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +64,12 @@ public class DisplayItems extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse response = error.networkResponse;
+                apiServer.genericErrors(response.statusCode);
+            }
         });
     }
 
@@ -84,6 +92,12 @@ public class DisplayItems extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse response = error.networkResponse;
+                apiServer.genericErrors(response.statusCode);
             }
         });
     }

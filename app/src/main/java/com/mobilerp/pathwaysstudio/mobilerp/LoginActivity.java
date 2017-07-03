@@ -27,7 +27,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,6 +79,12 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Toast.makeText(context, R.string.fail, Toast.LENGTH_LONG).show();
                 }
+            }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        NetworkResponse response = error.networkResponse;
+                        apiServer.genericErrors(response.statusCode);
             }
         });
     }

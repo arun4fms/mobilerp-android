@@ -1,5 +1,7 @@
+package com.mobilerp.pathwaysstudio.mobilerp;
+
 /**
- * Created by Eligio Becerra on 01/03/2017.
+ * Created by Eligio Becerra on 03/07/2017.
  * Copyright (C) 2017 Eligio Becerra
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -16,17 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mobilerp.pathwaysstudio.mobilerp;
+public class NewItemListModel extends ItemListModel {
 
-/**
- * This interfaces allows us to trigger changes in the UI when a WebService
- * has finished doing a request
- */
-public interface RequestResponse {
+    private String barcode;
 
-    /**
-     * Triggers
-     * @param result
-     */
-    void onResponseReceived(RequestResult result);
+    public NewItemListModel(String barcode, String name, Double price, int total) {
+        super(name, price, total);
+        this.barcode = barcode;
+    }
+
+    public String getBarcode() {
+        return this.barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
 }

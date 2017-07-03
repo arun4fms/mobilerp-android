@@ -34,11 +34,12 @@ import java.util.Map;
 
 public class APIServer {
 
-    //public static final String BASE_URL = "http://192.168.1.70:5000/";
-    public static final String BASE_URL = "http://192.168.0.108:5000/";
+    public static final String BASE_URL = "http://192.168.1.70:5000/";
+    //public static final String BASE_URL = "http://192.168.0.104:5000/";
     public static final String LOGIN = "mobilerp/api/v1.0/user/checkLogin/";
     public static final String LIST_PRODUCTS = "mobilerp/api/v1.0/listProducts/";
     public static final String LIST_DEPLETED = "mobilerp/api/v1.0/listDepletedProducts/";
+    public static final String FIND_PRODUCT = "/mobilerp/api/v1.0/findProduct/";
 
     final static User USER = User.getInstance();
     Context context;
@@ -64,10 +65,7 @@ public class APIServer {
             public void onErrorResponse(VolleyError error) {
                 NetworkResponse response = error.networkResponse;
                 if (response != null) {
-                    if (response.statusCode == 401)
-                        Toast.makeText(context, R.string._401_access_denied, Toast.LENGTH_LONG).show();
-                    if (response.statusCode == 500)
-                        Toast.makeText(context, R.string._500_server_error, Toast.LENGTH_LONG).show();
+                    callback.onErrorResponse(error);
                 }
             }
         })
@@ -83,5 +81,14 @@ public class APIServer {
         };
 
         VolleySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    public void genericErrors(int errorCode) {
+        if (errorCode == 401)
+            Toast.makeText(context, R.string._401_access_denied, Toast.LENGTH_LONG).show();
+        if (errorCode == 500)
+            Toast.makeText(context, R.string._500_server_error, Toast.LENGTH_LONG).show();
+        if (errorCode == 404)
+            Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
     }
 }

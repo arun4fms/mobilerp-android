@@ -39,7 +39,7 @@ public class APIServer {
     public static final String LOGIN = "mobilerp/api/v1.0/user/checkLogin/";
     public static final String LIST_PRODUCTS = "mobilerp/api/v1.0/listProducts/";
     public static final String LIST_DEPLETED = "mobilerp/api/v1.0/listDepletedProducts/";
-    public static final String FIND_PRODUCT = "/mobilerp/api/v1.0/findProduct/";
+    public static final String FIND_PRODUCT = "mobilerp/api/v1.0/findProduct/";
 
     final static User USER = User.getInstance();
     Context context;

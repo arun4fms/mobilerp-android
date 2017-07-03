@@ -26,9 +26,9 @@
     <string name="_401_access_denied">Access denied</string>
     <string name="unknown_server_error">Unknown server error</string>
     <string name="title_activity_display_items">List of items</string>
-    <string name="wait_string">"Please wait..."</string>
+    <string name="wait_string">"Please wait&#8230;"</string>
     <string name="item_name">Item</string>
     <string name="item_price">Price</string>
     <string name="item_total">Total units</string>
-    <string name="title_activity_barcode_scanner">BarcodeScanner</string>
+    <string name="title_activity_barcode_scanner">Stock input</string>
 </resources>

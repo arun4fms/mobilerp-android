@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
@@ -35,28 +36,9 @@ public class BarcodeScanner extends AppCompatActivity {
     CameraSettings settings;
     APIServer apiServer;
     ArrayList<ItemListModel> items;
-    ListView itemView;
-    ItemListAdapter itemAdapter;
+    ListView lvItems;
+    ItemListAdapter listAdapter;
 
-
-    private BarcodeCallback callback = new BarcodeCallback() {
-        @Override
-        public void barcodeResult(BarcodeResult result) {
-            if (result.getText() == null || result.getText().equals(lastText)) {
-                return;
-            }
-
-            lastText = result.getText();
-            barcodeView.setStatusText(result.getText());
-            findLastScannedProduct(result.getText());
-            beepManager.playBeepSoundAndVibrate();
-        }
-
-        @Override
-        public void possibleResultPoints(List<ResultPoint> resultPoints) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +58,63 @@ public class BarcodeScanner extends AppCompatActivity {
 
         beepManager = new BeepManager(this);
 
+        //Server init
+        apiServer = new APIServer(context);
+
         // Init elements to display items
-        itemView = (ListView) findViewById(R.id.itemList);
+        items = new ArrayList<>();
+        lvItems = (ListView)findViewById(R.id.itemList);
+
+    }
+
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if (result.getText() == null || result.getText().equals(lastText)) {
+                return;
+            }
+
+            lastText = result.getText();
+            barcodeView.setStatusText(lastText);
+            beepManager.playBeepSoundAndVibrate();
+            findLastScannedProduct(result.getText());
+
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+
+        }
+    };
+
+    private void findLastScannedProduct(String barcode) {
+        Log.d("URL", APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode);
+        apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode, null, new VolleyCallback() {
+            @Override
+            public void onSuccessResponse(JSONObject result) {
+                try {
+                    JSONArray _itms = result.getJSONArray("mobilerp");
+                    JSONObject _itm = _itms.getJSONObject(0);
+                    Toast.makeText(context, _itm.getString("name"), Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                apiServer.genericErrors(error.networkResponse.statusCode);
+                NetworkResponse response = error.networkResponse;
+                if (response.statusCode == 404) {
+                    Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
+                    items.add(new ItemListModel(lastText));
+                    items.add(new ItemListModel("NOMBRE", 0.0, 0));
+                } else {
+                    apiServer.genericErrors(response.statusCode);
+                }
+            }
+        });
     }
 
     @Override
@@ -109,30 +146,5 @@ public class BarcodeScanner extends AppCompatActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-    private void findLastScannedProduct(String barcode) {
-        apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode, null, new VolleyCallback() {
-            @Override
-            public void onSuccessResponse(JSONObject result) {
-                try {
-                    JSONArray _itms = result.getJSONArray("mobilerp");
-                    JSONObject _itm = _itms.getJSONObject(0);
-                    Toast.makeText(context, _itm.getString("name"), Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                NetworkResponse response = error.networkResponse;
-                if (response.statusCode == 404) {
-                    Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
-                } else {
-                    apiServer.genericErrors(response.statusCode);
-                }
-            }
-        });
-    }
 }

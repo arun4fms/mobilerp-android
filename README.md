@@ -2,7 +2,7 @@
 
 A small self-hosted ERP that works with your smarphone
 
-[![Build Status](https://travis-ci.org/eligiobz/mobilerp-android.svg?branch=master)][1])
+[![Build Status](https://travis-ci.org/eligiobz/mobilerp-android.svg?branch=master)][1]
 
 ## The idea
 

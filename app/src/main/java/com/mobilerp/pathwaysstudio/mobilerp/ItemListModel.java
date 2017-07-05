@@ -23,6 +23,7 @@ public class ItemListModel {
     private String name;
     private Double price;
     private Integer total;
+    private String barcode = null;
 
     private boolean isGroupHeader = false;
 
@@ -36,6 +37,11 @@ public class ItemListModel {
         this.setName(name);
         this.setPrice(price);
         this.setTotal(total);
+    }
+
+    public ItemListModel(String barcode, String name, Double price, Integer total) {
+        this(name, price, total);
+        this.setBarcode(barcode);
     }
 
     public boolean getIsGroupHeader() {
@@ -70,15 +76,23 @@ public class ItemListModel {
         return total;
     }
 
-    public String getTotalString() {
-        return total.toString();
-    }
-
     public void setTotal(Integer total) {
         this.total = total;
     }
 
+    public String getTotalString() {
+        return total.toString();
+    }
+
     public boolean isGroupHeader() {
         return isGroupHeader;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 }

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -24,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BarcodeScanner extends AppCompatActivity {
@@ -35,10 +34,26 @@ public class BarcodeScanner extends AppCompatActivity {
     String lastText;
     CameraSettings settings;
     APIServer apiServer;
-    ArrayList<ItemListModel> items;
-    ListView lvItems;
-    ItemListAdapter listAdapter;
+    TextView tvBarcode, tvBarcodeValue, tvPrice, tvTotal;
+    EditText etName, etPrice, etTotal;
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if (result.getText() == null || result.getText().equals(lastText)) {
+                return;
+            }
 
+            lastText = result.getText();
+            barcodeView.setStatusText(lastText);
+            beepManager.playBeepSoundAndVibrate();
+            findLastScannedProduct(result.getText());
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,33 +77,27 @@ public class BarcodeScanner extends AppCompatActivity {
         apiServer = new APIServer(context);
 
         // Init elements to display items
-        items = new ArrayList<>();
-        lvItems = (ListView)findViewById(R.id.itemList);
+        tvBarcode = (TextView) findViewById(R.id.tvBarcode);
+        tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
+        tvPrice = (TextView) findViewById(R.id.tvPrice);
+        tvTotal = (TextView) findViewById(R.id.tvTotal);
+
+        etName = (EditText) findViewById(R.id.etName);
+        etPrice = (EditText) findViewById(R.id.etPrice);
+        etTotal = (EditText) findViewById(R.id.etTotal);
+
+        tvBarcode.setText(R.string.item_barcode);
+        tvPrice.setText(R.string.item_price);
+        tvTotal.setText(R.string.item_total);
+
+        etName.setEnabled(false);
+        etPrice.setEnabled(false);
+        etTotal.setEnabled(false);
 
     }
 
-    private BarcodeCallback callback = new BarcodeCallback() {
-        @Override
-        public void barcodeResult(BarcodeResult result) {
-            if (result.getText() == null || result.getText().equals(lastText)) {
-                return;
-            }
-
-            lastText = result.getText();
-            barcodeView.setStatusText(lastText);
-            beepManager.playBeepSoundAndVibrate();
-            findLastScannedProduct(result.getText());
-
-        }
-
-        @Override
-        public void possibleResultPoints(List<ResultPoint> resultPoints) {
-
-        }
-    };
-
-    private void findLastScannedProduct(String barcode) {
-        Log.d("URL", APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode);
+    private void findLastScannedProduct(final String barcode) {
+        tvBarcodeValue.setText(barcode);
         apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode, null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
@@ -104,12 +113,13 @@ public class BarcodeScanner extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-//                apiServer.genericErrors(error.networkResponse.statusCode);
                 NetworkResponse response = error.networkResponse;
                 if (response.statusCode == 404) {
                     Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
-                    items.add(new ItemListModel(lastText));
-                    items.add(new ItemListModel("NOMBRE", 0.0, 0));
+                    etName.setText(R.string.new_item);
+                    etName.setEnabled(true);
+                    etPrice.setEnabled(true);
+                    etTotal.setEnabled(true);
                 } else {
                     apiServer.genericErrors(response.statusCode);
                 }

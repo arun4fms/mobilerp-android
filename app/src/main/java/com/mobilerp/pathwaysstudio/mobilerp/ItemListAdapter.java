@@ -1,6 +1,7 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,21 +30,23 @@ import java.util.ArrayList;
 
 public class ItemListAdapter extends ArrayAdapter<ItemListModel> {
 
-    private final Context contx;
+    private final Context context;
     private final ArrayList<ItemListModel> modelsArrayList;
 
     public ItemListAdapter(Context context, ArrayList<ItemListModel> modelsArrayList) {
         super(context, R.layout.item_row, modelsArrayList);
-        this.contx = context;
+        this.context = context;
         this.modelsArrayList = modelsArrayList;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) contx.getSystemService(Context
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context
                 .LAYOUT_INFLATER_SERVICE);
 
         View rowView;
+
         if (!modelsArrayList.get(position).getIsGroupHeader()) {
             rowView = inflater.inflate(R.layout.item_row, parent, false);
 
@@ -66,5 +69,4 @@ public class ItemListAdapter extends ArrayAdapter<ItemListModel> {
 
         return rowView;
     }
-
 }

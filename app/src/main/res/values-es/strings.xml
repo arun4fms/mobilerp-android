@@ -31,4 +31,6 @@
     <string name="item_price">Precio</string>
     <string name="item_total">Existencia</string>
     <string name="title_activity_barcode_scanner">Entrada de inventario</string>
+    <string name="item_barcode">Código de barras</string>
+    <string name="new_item">Nuevo artículo</string>
 </resources>

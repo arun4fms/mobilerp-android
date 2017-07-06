@@ -29,6 +29,7 @@ import java.util.List;
 public class BarcodeScanner extends AppCompatActivity {
 
     final Context context = this;
+    boolean isNewProduct;
     DecoratedBarcodeView barcodeView;
     BeepManager beepManager;
     String lastBarcode;
@@ -102,10 +103,13 @@ public class BarcodeScanner extends AppCompatActivity {
         apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode, null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
+                isNewProduct = false;
                 try {
                     JSONArray _itms = result.getJSONArray("mobilerp");
                     JSONObject _itm = _itms.getJSONObject(0);
-                    Toast.makeText(context, _itm.getString("name"), Toast.LENGTH_LONG).show();
+                    etName.setText(_itm.getString("name"));
+                    etPrice.setText(_itm.getString("price"));
+                    enableEntries();
                 } catch (JSONException e) {
                     Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -114,14 +118,11 @@ public class BarcodeScanner extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-//                apiServer.genericErrors(error.networkResponse.statusCode);
                 NetworkResponse response = error.networkResponse;
                 if (response.statusCode == 404) {
                     Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
-                    etName.setText(R.string.new_item);
-                    etName.setEnabled(true);
-                    etPrice.setEnabled(true);
-                    etTotal.setEnabled(true);
+                    isNewProduct = true;
+                    enableEntries();
                 } else {
                     apiServer.genericErrors(response.statusCode);
                 }
@@ -129,29 +130,71 @@ public class BarcodeScanner extends AppCompatActivity {
         });
     }
 
-    public void saveProduct(View view){
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("barcode", lastBarcode);
-            jsonObject.put("name", etName.getText());
-            jsonObject.put("price", etPrice.getText());
-            jsonObject.put("units", etTotal.getText());
-            apiServer.getResponse(Request.Method.POST, APIServer.BASE_URL + APIServer.NEW_PRODUCT,
-                    jsonObject, new VolleyCallback() {
-                        @Override
-                        public void onSuccessResponse(JSONObject result) {
-                            Toast.makeText(context, R.string.success, Toast.LENGTH_LONG).show();
-                        }
+    private void enableEntries(){
+        etPrice.setEnabled(true);
+        etTotal.setEnabled(true);
+        if (isNewProduct) {
+            etName.setText(R.string.new_item);
+            etName.setEnabled(true);
+        }
+    }
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(context, R.string.fail, Toast.LENGTH_LONG).show();
-                        }
-                    });
-        } catch (JSONException e) {
-            e.printStackTrace();
+    public void saveProduct(View view) {
+        JSONObject jsonObject = new JSONObject();
+        if (isNewProduct) {
+            try {
+                jsonObject.put("barcode", lastBarcode);
+                jsonObject.put("name", etName.getText());
+                jsonObject.put("price", etPrice.getText());
+                jsonObject.put("units", etTotal.getText());
+                apiServer.getResponse(Request.Method.POST, APIServer.BASE_URL + APIServer.NEW_PRODUCT,
+                        jsonObject, new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(JSONObject result) {
+                                cleanEntries();
+                            }
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context, R.string.fail, Toast.LENGTH_LONG).show();
+                            }
+                        });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                jsonObject.put("price", etPrice.getText());
+                jsonObject.put("units", etTotal.getText());
+                apiServer.getResponse(Request.Method.PUT, APIServer.BASE_URL + APIServer
+                                .UPDATE_PRODUCT + lastBarcode,
+                        jsonObject, new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(JSONObject result) {
+                                cleanEntries();
+                            }
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context, R.string.fail, Toast.LENGTH_LONG).show();
+                            }
+                        });
+            }catch (JSONException ex){
+                ex.printStackTrace();
+            }
         }
 
+    }
+
+    private void cleanEntries(){
+        Toast.makeText(context, R.string.success, Toast.LENGTH_LONG).show();
+        etName.setText("");
+        etPrice.setText("");
+        etTotal.setText("");
+        tvBarcodeValue.setText("");
+        etName.setEnabled(false);
+        etPrice.setEnabled(false);
+        etTotal.setEnabled(false);
     }
 
     @Override

@@ -41,6 +41,7 @@ public class APIServer {
     public static final String LIST_DEPLETED = "mobilerp/api/v1.0/listDepletedProducts/";
     public static final String FIND_PRODUCT = "mobilerp/api/v1.0/findProduct/";
     public static final String NEW_PRODUCT = "mobilerp/api/v1.0/newProduct/";
+    public static final String UPDATE_PRODUCT = "mobilerp/api/v1.0/updateProduct/";
 
     final static User USER = User.getInstance();
     Context context;

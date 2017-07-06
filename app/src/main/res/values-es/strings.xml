@@ -33,4 +33,5 @@
     <string name="title_activity_barcode_scanner">Entrada de inventario</string>
     <string name="item_barcode">Código de barras</string>
     <string name="new_item">Nuevo artículo</string>
+    <string name="save">Guardar</string>
 </resources>

@@ -1,8 +1,11 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -72,8 +75,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_sales) {
-            // Handle the camera action
+            SalesFragment fragment = new SalesFragment();
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_content, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         } else if (id == R.id.nav_manager) {
+
 
         } else if (id == R.id.nav_share) {
 

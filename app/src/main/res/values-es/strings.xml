@@ -43,4 +43,5 @@
     <string name="title_activity_main">MobilERP</string>
     <string name="make_sale">Ventas</string>
     <string name="manager">Administrar</string>
+    <string name="new_sale">Nueva venta</string>
 </resources>

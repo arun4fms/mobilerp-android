@@ -19,12 +19,12 @@ It currently fetch some reports (See [MobilERP-server Roadmap][6]). It also scan
 
 ## Roadmap
 
-- [] Code refactoring
-- [] Better UI
-	- [] Implement navbar
-	- [] Split daily activities from management activities
-	- [] Revise font text and position
-- [] Implement service discovery
+- [ ] Code refactoring
+- [ ] Better UI
+	- [ ] Implement navbar
+	- [ ] Split daily activities from management activities
+	- [ ] Revise font text and position
+- [ ] Implement service discovery
 
 ## Licenses
 

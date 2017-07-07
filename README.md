@@ -1,5 +1,7 @@
 # MobilERP
 
+**_Currently under heavy development_**
+
 A small self-hosted ERP that works with your smarphone
 
 [![Build Status](https://travis-ci.org/eligiobz/mobilerp-android.svg?branch=master)][1]
@@ -13,11 +15,16 @@ This is MobilERP-android. Check the companion repo MobilERP-server [MobilERP-ser
 
 ## What it currently does
 
-Eats all your data, pillages your town and burns down your house. This means is working as intended. It also teams up teams up with [MobilERP-server][3]. Seriously check it out.
+It currently fetch some reports (See [MobilERP-server Roadmap][6]). It also scans a product's barcode, inserts it into the database or updates it quantity and/or price.
 
 ## Roadmap
 
-TBW
+- [] Code refactoring
+- [] Better UI
+	- [] Implement navbar
+	- [] Split daily activities from management activities
+	- [] Revise font text and position
+- [] Implement service discovery
 
 ## Licenses
 
@@ -44,3 +51,4 @@ Licensed under the [Apache License 2.0][5]
 [3]: https://github.com/eligiobz/mobilerp-server
 [4]: https://github.com/journeyapps/zxing-android-embedded
 [5]: http://www.apache.org/licenses/LICENSE-2.0
+[6]: https://github.com/eligiobz/mobilerp-android#Roadmap

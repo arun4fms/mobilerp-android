@@ -11,7 +11,7 @@
     <string name="most_sold_products">Most sold products</string>
     <string name="least_sold_products">Least sold products</string>
     <string name="custom_statement">Custom statement</string>
-    <string name="pharmacy">Drugstore</string>
+    <string name="pharmacy">Stock</string>
     <string name="sales">Sales</string>
     <string name="patients">Patients</string>
     <string name="user">Username</string>
@@ -34,4 +34,13 @@
     <string name="item_barcode">Barcode</string>
     <string name="new_item">New item</string>
     <string name="save">Save</string>
+    <string name="add_to_sale">Add to sale</string>
+    <string name="finish">Finish</string>
+    <string name="amount_items">Amount</string>
+    <string name="total_sale">Total sale</string>
+    <string name="title_activity_sales">Sale</string>
+    <string name="title_activity_hub">Hub</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

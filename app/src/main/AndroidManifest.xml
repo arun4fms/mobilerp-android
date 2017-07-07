@@ -2,7 +2,6 @@
 <manifest package="com.mobilerp.pathwaysstudio.mobilerp"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
 
@@ -14,7 +13,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity android:name=".LoginActivity">
         </activity>
         <activity android:name=".AdminActivity">
@@ -39,5 +37,16 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode"/>
 
+        <activity
+            android:name=".SalesActivity"
+            android:label="@string/title_activity_sales"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".Hub"
+            android:label="@string/title_activity_hub"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
+
 </manifest>

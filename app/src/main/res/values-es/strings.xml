@@ -11,7 +11,7 @@
     <string name="most_sold_products">Productos + vendidos</string>
     <string name="least_sold_products">Productos - vendidos</string>
     <string name="custom_statement">Corte personalizado</string>
-    <string name="pharmacy">Farmacia</string>
+    <string name="pharmacy">Almacén</string>
     <string name="sales">Ventas</string>
     <string name="patients">Pacientes</string>
     <string name="user">Usuario</string>
@@ -34,4 +34,9 @@
     <string name="item_barcode">Código de barras</string>
     <string name="new_item">Nuevo artículo</string>
     <string name="save">Guardar</string>
+    <string name="add_to_sale">Agregar a venta</string>
+    <string name="finish">Finalizar</string>
+    <string name="amount_items">Cantidad</string>
+    <string name="total_sale">Total a pagar</string>
+    <string name="title_activity_sales">Venta</string>
 </resources>

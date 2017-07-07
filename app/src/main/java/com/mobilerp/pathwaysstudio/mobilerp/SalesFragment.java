@@ -35,17 +35,23 @@ import java.util.List;
  */
 public class SalesFragment extends Fragment {
 
-    Context context;
+    String lastBarcode;
+    Double totalSale;
     boolean isNewProduct;
+
+    APIServer apiServer;
+    ArrayList<SalesItem> items;
+
+    Context context;
     DecoratedBarcodeView barcodeView;
     BeepManager beepManager;
-    String lastBarcode, lastName;
     CameraSettings settings;
-    APIServer apiServer;
-    TextView tvName, tvAmount, tvSale, tvPrice;
+
+    TextView tvName, tvSale, tvPrice;
     EditText etAmount;
     Button btnAddSale, btnEndSale;
-    ArrayList<SalesItem> items;
+
+
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
@@ -117,6 +123,7 @@ public class SalesFragment extends Fragment {
         });
 
         items = new ArrayList<>();
+        totalSale = 0.0;
     }
 
     @Override
@@ -127,12 +134,15 @@ public class SalesFragment extends Fragment {
     }
 
     private void addProduct(){
+        int amount = Integer.parseInt(etAmount.getText().toString());
+        Double price = Double.parseDouble(tvPrice.getText().toString());
+        items.add(new SalesItem(lastBarcode, amount, price));
+        totalSale += (items.get(items.size() - 1).price * amount);
+        tvSale.setText(totalSale.toString());
         Toast.makeText(context, tvName.getText().toString() + " " + getString(R.string.added), Toast.LENGTH_LONG).show();
-        items.add(new SalesItem(lastBarcode, 1, Double.parseDouble(tvPrice.getText().toString())));
     }
 
     private void endSale(){
-        Toast.makeText(context, "End Sale", Toast.LENGTH_LONG).show();
 
     }
 
@@ -165,7 +175,7 @@ public class SalesFragment extends Fragment {
         tvName.setText("");
         tvPrice.setText("");
         tvSale.setText("");
-        tvAmount.setText("");
+        etAmount.setText("");
     }
 
     @Override

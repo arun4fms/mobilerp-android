@@ -38,5 +38,9 @@
     <string name="finish">Finalizar</string>
     <string name="amount_items">Cantidad</string>
     <string name="total_sale">Total a pagar</string>
-    <string name="title_activity_sales">Venta</string>
+    <string name="navigation_drawer_open">Abrir menú de navegación</string>
+    <string name="navigation_drawer_close">Cerrar menú de navegación</string>
+    <string name="title_activity_main">MobilERP</string>
+    <string name="make_sale">Ventas</string>
+    <string name="manager">Administrar</string>
 </resources>

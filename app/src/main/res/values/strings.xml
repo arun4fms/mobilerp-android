@@ -39,8 +39,9 @@
     <string name="amount_items">Amount</string>
     <string name="total_sale">Total sale</string>
     <string name="title_activity_sales">Sale</string>
-    <string name="title_activity_hub">Hub</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_main">MobilERP</string>
+    <string name="make_sale">Sales</string>
+    <string name="manager">Management</string>
 </resources>

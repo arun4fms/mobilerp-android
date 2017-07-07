@@ -1,13 +1,8 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +13,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    User user = User.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +31,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /********************* DISABLE ON RELEASE *************************/
+        user.setName("carlo");
+        user.setPass("123");
+        user.setIsLoginIn(true);
+
     }
 
     @Override
@@ -76,13 +79,16 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_sales) {
             SalesFragment fragment = new SalesFragment();
-            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_content, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .commit();
         } else if (id == R.id.nav_manager) {
-
-
+            AdminFragment fragment = new AdminFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .commit();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

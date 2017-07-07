@@ -34,11 +34,6 @@
             android:value="barcode"/>
 
         <activity
-            android:name=".SalesActivity"
-            android:label="@string/title_activity_sales"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">

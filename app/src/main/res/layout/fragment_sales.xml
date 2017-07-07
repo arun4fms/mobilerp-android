@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
         android:ems="10"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -37,6 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="46dp"
         android:text="@string/item_price"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvName"
         tools:layout_constraintLeft_creator="1"
@@ -47,33 +49,41 @@
         android:layout_width="77dp"
         android:layout_height="36dp"
         android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="37dp"
         android:ems="10"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintLeft_toRightOf="@+id/tvPrice"
+        app:layout_constraintTop_toBottomOf="@+id/tvName"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1"/>
+
+    <EditText
+        android:id="@+id/tvAmountValue"
+        android:layout_width="75dp"
+        android:layout_height="39dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="number"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintLeft_toRightOf="@+id/tvAmount"
         app:layout_constraintTop_toBottomOf="@+id/tvName"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1"/>
 
     <TextView
         android:id="@+id/tvAmount"
-        android:layout_width="75dp"
-        android:layout_height="39dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="36dp"
-        android:ems="10"
-        app:layout_constraintLeft_toRightOf="@+id/tvAmountValue"
-        app:layout_constraintTop_toBottomOf="@+id/tvName"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1"/>
-
-    <TextView
-        android:id="@+id/tvAmountValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="47dp"
         android:text="@string/amount_items"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintLeft_toRightOf="@+id/tvPriceValue"
         app:layout_constraintTop_toBottomOf="@+id/tvName"
         tools:layout_constraintLeft_creator="1"
@@ -145,6 +155,3 @@
         tools:layout_constraintTop_creator="1"/>
 
 </android.support.constraint.ConstraintLayout>
-
-
-    <!--</RelativeLayout>-->

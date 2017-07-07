@@ -5,9 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.ButtonBarLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.zxing.ResultPoint;
@@ -30,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,15 +39,42 @@ public class SalesFragment extends Fragment {
     boolean isNewProduct;
     DecoratedBarcodeView barcodeView;
     BeepManager beepManager;
-    String lastBarcode;
+    String lastBarcode, lastName;
     CameraSettings settings;
     APIServer apiServer;
     TextView tvName, tvAmount, tvSale, tvPrice;
+    EditText etAmount;
     Button btnAddSale, btnEndSale;
+    ArrayList<SalesItem> items;
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if (result.getText() == null || result.getText().equals(lastBarcode)) {
+                return;
+            }
+
+            lastBarcode = result.getText();
+            barcodeView.setStatusText(lastBarcode);
+            beepManager.playBeepSoundAndVibrate();
+            findLastScannedProduct();
+
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+
+        }
+    };
+
+    public SalesFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        context = getContext();
 
         getActivity().setTitle(R.string.new_sale);
 
@@ -70,9 +94,10 @@ public class SalesFragment extends Fragment {
 
         // Init elements to display items
         tvPrice = (TextView) getView().findViewById(R.id.tvPriceValue);
-        tvAmount = (TextView) getView().findViewById(R.id.tvAmountValue);
         tvName = (TextView) getView().findViewById(R.id.tvName);
         tvSale = (TextView) getView().findViewById(R.id.tvTotalSaleValue);
+
+        etAmount = (EditText) getView().findViewById(R.id.tvAmountValue);
 
         btnAddSale = (Button) getView().findViewById(R.id.addProduct);
         btnEndSale= (Button) getView().findViewById(R.id.endSale);
@@ -91,7 +116,7 @@ public class SalesFragment extends Fragment {
             }
         });
 
-        context = getContext();
+        items = new ArrayList<>();
     }
 
     @Override
@@ -101,36 +126,18 @@ public class SalesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_sales, container, false);
     }
 
-    private BarcodeCallback callback = new BarcodeCallback() {
-        @Override
-        public void barcodeResult(BarcodeResult result) {
-            if (result.getText() == null || result.getText().equals(lastBarcode)) {
-                return;
-            }
-
-            lastBarcode = result.getText();
-            barcodeView.setStatusText(lastBarcode);
-            beepManager.playBeepSoundAndVibrate();
-            findLastScannedProduct(result.getText());
-
-        }
-
-        @Override
-        public void possibleResultPoints(List<ResultPoint> resultPoints) {
-
-        }
-    };
-
     private void addProduct(){
-        Toast.makeText(context, "Add Product", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, tvName.getText().toString() + " " + getString(R.string.added), Toast.LENGTH_LONG).show();
+        items.add(new SalesItem(lastBarcode, 1, Double.parseDouble(tvPrice.getText().toString())));
     }
 
     private void endSale(){
         Toast.makeText(context, "End Sale", Toast.LENGTH_LONG).show();
+
     }
 
-    private void findLastScannedProduct(String barcode) {
-        apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode, null, new VolleyCallback() {
+    private void findLastScannedProduct() {
+        apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + lastBarcode, null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
                 isNewProduct = false;
@@ -139,6 +146,7 @@ public class SalesFragment extends Fragment {
                     JSONObject _itm = _itms.getJSONObject(0);
                     tvName.setText(_itm.getString("name"));
                     tvPrice.setText(_itm.getString("price"));
+                    etAmount.setText("1");
                 } catch (JSONException e) {
                     Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -151,7 +159,6 @@ public class SalesFragment extends Fragment {
             }
         });
     }
-
 
     private void cleanEntries(){
         Toast.makeText(context, R.string.success, Toast.LENGTH_LONG).show();
@@ -167,25 +174,33 @@ public class SalesFragment extends Fragment {
         barcodeView.resume();
     }
 
+//    public void pause(View view) {
+//        barcodeView.pause();
+//    }
+//
+//    public void resume(View view) {
+//        barcodeView.resume();
+//    }
+//
+//    public void triggerScan(View view) {
+//        barcodeView.decodeSingle(callback);
+//    }
+
     @Override
     public void onPause() {
         super.onPause();
         barcodeView.pause();
     }
 
-    public void pause(View view) {
-        barcodeView.pause();
-    }
+    class SalesItem {
+        public String barcode;
+        public int amount;
+        public Double price;
 
-    public void resume(View view) {
-        barcodeView.resume();
-    }
-
-    public void triggerScan(View view) {
-        barcodeView.decodeSingle(callback);
-    }
-
-    public SalesFragment() {
-        // Required empty public constructor
+        public SalesItem(String barcode, int amount, Double price) {
+            this.barcode = barcode;
+            this.amount = amount;
+            this.price = price;
+        }
     }
 }

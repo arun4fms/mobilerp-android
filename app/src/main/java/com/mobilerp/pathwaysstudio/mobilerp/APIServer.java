@@ -35,7 +35,7 @@ import java.util.Map;
 public class APIServer {
 
 //    public static final String BASE_URL = "http://192.168.1.70:5000/";
-public static final String BASE_URL = "http://192.168.0.104:5000/";
+public static final String BASE_URL = "http://192.168.0.101:5000/";
     public static final String LOGIN = "mobilerp/api/v1.0/user/checkLogin/";
     public static final String LIST_PRODUCTS = "mobilerp/api/v1.0/listProducts/";
     public static final String LIST_DEPLETED = "mobilerp/api/v1.0/listDepletedProducts/";
@@ -43,7 +43,7 @@ public static final String BASE_URL = "http://192.168.0.104:5000/";
     public static final String NEW_PRODUCT = "mobilerp/api/v1.0/newProduct/";
     public static final String UPDATE_PRODUCT = "mobilerp/api/v1.0/updateProduct/";
 
-    final static User USER = User.getInstance();
+    private static final User USER = User.getInstance();
     Context context;
     private VolleySingleton queue;
 

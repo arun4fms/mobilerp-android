@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     User user = User.getInstance();
+    ServiceDiscovery ds1, ds2, ds3, ds4, ds5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity
         user.setPass("123");
         user.setIsLoginIn(true);
 
+        /*********************** SERVICE FINDER ***************************/
+        ds1 = new ServiceDiscovery(this);
+        ds1.doScan();
     }
 
     @Override

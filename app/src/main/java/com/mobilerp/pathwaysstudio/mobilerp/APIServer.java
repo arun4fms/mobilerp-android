@@ -34,16 +34,16 @@ import java.util.Map;
 
 public class APIServer {
 
-//    public static final String BASE_URL = "http://192.168.1.70:5000/";
-public static final String BASE_URL = "http://192.168.0.101:5000/";
     public static final String LOGIN = "mobilerp/api/v1.0/user/checkLogin/";
     public static final String LIST_PRODUCTS = "mobilerp/api/v1.0/listProducts/";
     public static final String LIST_DEPLETED = "mobilerp/api/v1.0/listDepletedProducts/";
     public static final String FIND_PRODUCT = "mobilerp/api/v1.0/findProduct/";
     public static final String NEW_PRODUCT = "mobilerp/api/v1.0/newProduct/";
     public static final String UPDATE_PRODUCT = "mobilerp/api/v1.0/updateProduct/";
-
     private static final User USER = User.getInstance();
+    //    public static final String BASE_URL = "http://192.168.1.70:5000/";
+//public static final String BASE_URL = "http://192.168.0.101:5000/";
+    public static String BASE_URL;
     Context context;
     private VolleySingleton queue;
 
@@ -51,6 +51,9 @@ public static final String BASE_URL = "http://192.168.0.101:5000/";
         context = ctx;
     }
 
+    public void setBASE_URL(String u) {
+        BASE_URL = u;
+    }
 
     public void getResponse(int method, String url, JSONObject jsonValues, final
     VolleyCallback callback) {
@@ -92,5 +95,26 @@ public static final String BASE_URL = "http://192.168.0.101:5000/";
             Toast.makeText(context, R.string._500_server_error, Toast.LENGTH_LONG).show();
         if (errorCode == 404)
             Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
+    }
+
+    public void getResponse(boolean no_auth, int method, String url, JSONObject jsonValues, final
+    VolleyCallback callback) {
+        queue = VolleySingleton.getInstance(context);
+
+        JsonObjectRequest request = new JsonObjectRequest(method, url, jsonValues, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                callback.onSuccessResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse response = error.networkResponse;
+                if (response != null) {
+                    callback.onErrorResponse(error);
+                }
+            }
+        });
+        VolleySingleton.getInstance(context).addToRequestQueue(request);
     }
 }

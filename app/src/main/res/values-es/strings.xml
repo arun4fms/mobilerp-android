@@ -45,4 +45,5 @@
     <string name="manager">Administrar</string>
     <string name="new_sale">Nueva venta</string>
     <string name="added"> agregado</string>
+    <string name="settings">Preferencias</string>
 </resources>

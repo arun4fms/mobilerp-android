@@ -6,13 +6,17 @@ import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -39,9 +43,7 @@ public class ServiceDiscovery {
 
     private static final int NB_THREADS = 10;
     final Context context;
-    String LOG_TAG = "NetScan";
-    String netPrefix;
-    ArrayList<InetAddress> validHosts;
+    String LOG_TAG = "NetScan", netPrefix, finalHost;
     int port;
     APIServer apiServer;
 
@@ -49,14 +51,16 @@ public class ServiceDiscovery {
 
         this.context = context;
         this.netPrefix = "";
-        this.validHosts = new ArrayList<>();
         this.port = 5000;
         apiServer = new APIServer(this.context);
+
 
         if (context != null) {
 
             WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo connectionInfo = wm.getConnectionInfo();
+            Log.d("NET_NAME", wm.getConnectionInfo().getSSID());
+            Log.d("NET_NAME", String.valueOf(wm.getConnectionInfo().getNetworkId()));
             int ipAddress = connectionInfo.getIpAddress();
             String ipString = Formatter.formatIpAddress(ipAddress);
             netPrefix = ipString.substring(0, ipString.lastIndexOf(".") + 1);
@@ -85,16 +89,16 @@ public class ServiceDiscovery {
 
     private Runnable pingRunnable(final String host) {
         return new Runnable() {
+            String url;
             public void run() {
                 try {
                     InetAddress inet = InetAddress.getByName(host);
-                    boolean reachable = inet.isReachable(1000);
-                    if (reachable) {
-                        Log.d(LOG_TAG, host + " => Result: reachable");
-                        //validHosts.add(inet);
+                    if (inet.isReachable(1000)) {
+                        final String _url = "http:/" + (inet.toString() + ":" + String.valueOf
+                                (port));
                         if (testPort(inet)) {
-                            final String url = inet.toString() + ":" + String.valueOf(port);
-                            Log.d(LOG_TAG, "Server found at " + url);
+                            ExecutorService executor = Executors.newFixedThreadPool(2);
+                            executor.execute(testServer(_url));
                         }
                     }
                 } catch (UnknownHostException e) {
@@ -102,6 +106,31 @@ public class ServiceDiscovery {
                 } catch (IOException e) {
                     Log.e(LOG_TAG, "IO Error", e);
                 }
+            }
+        };
+    }
+
+    private Runnable testServer(final String url) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                apiServer.getResponse(false, Request.Method.GET, url,
+                        null, new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(JSONObject result) {
+                                if (result.has("mobilerp")) {
+                                    Log.d(LOG_TAG, "Server found at " + url);
+                                    //APIServer.setBASE_URL(url);
+                                } else {
+                                    Log.d(LOG_TAG, "Not a server " + url);
+                                }
+                            }
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d(LOG_TAG, "Why am I here? " + url);
+                            }
+                        });
             }
         };
     }

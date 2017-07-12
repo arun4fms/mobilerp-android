@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     User user = User.getInstance();
-    ServiceDiscovery ds1, ds2, ds3, ds4, ds5;
+    ServiceDiscovery ds1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

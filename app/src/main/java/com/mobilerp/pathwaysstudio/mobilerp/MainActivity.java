@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity
         user.setIsLoginIn(true);
 
         /*********************** SERVICE FINDER ***************************/
-        ds1 = new ServiceDiscovery(this);
-        ds1.doScan();
+        /* ds1 = new ServiceDiscovery(this);
+        ds1.doScan(); */
     }
 
     @Override
@@ -93,8 +94,12 @@ public class MainActivity extends AppCompatActivity
             manager.beginTransaction()
                     .replace(R.id.main_content, fragment)
                     .commit();
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.nav_settings) {
+            PreferenceFragmentCompat fragment = new SettingsFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .commit();
         } else if (id == R.id.nav_send) {
 
         }

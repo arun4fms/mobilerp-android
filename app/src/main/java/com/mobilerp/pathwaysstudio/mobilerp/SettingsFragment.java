@@ -2,10 +2,14 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Created by Eligio Becerra on 12/07/2017.
@@ -27,7 +31,13 @@ import android.support.v7.preference.PreferenceManager;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    TextView tvNetName, tvServerAddr;
+    EditText edUserName, edUserPass;
     SharedPreferences sharedPreferences;
+
+    User user = User.getInstance();
+
+
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -52,6 +62,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle(R.string.settings);
+
+//        tvNetName = (TextView) getView().findViewById(R.id.tvNetNameValue);
+//        tvServerAddr = (TextView) getView().findViewById(R.id.tvServerIPValue);
+//
+//        edUserName = (EditText) getView().findViewById(R.id.edUserNameValue);
+//        edUserPass = (EditText) getView().findViewById(R.id.edUserPassValue);
+//
+//        edUserName.setText(user.getName());
+//        edUserPass.setText(user.getPass());
+    }
 
     @Override
     public void onResume() {

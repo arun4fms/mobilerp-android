@@ -47,4 +47,10 @@
     <string name="added"> agregado</string>
     <string name="settings">Preferencias</string>
     <string name="current_net">Red actual</string>
+    <string name="scan_network">Buscar servidor en LAN</string>
+    <string name="server_addr">Direccion del servidor</string>
+    <string name="update_credentials">Actualizar datos</string>
+    <string name="server_settings">Servidor</string>
+    <string name="server_config">Configuration del servidor</string>
+    <string name="user_settings">Ajustes de usuario</string>
 </resources>

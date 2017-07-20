@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText user_txt;
     EditText pass_txt;
     User user = User.getInstance();
+    URLs URL = URLs.getInstance();
 
     public LoginActivity() {
 
@@ -63,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     public void checkLogin(View view){
         user.setName(user_txt.getText().toString());
         user.setPass(pass_txt.getText().toString());
-        String url = APIServer.BASE_URL + APIServer.LOGIN;
+        String url = URLs.BASE_URL + URLs.LOGIN;
         apiServer.getResponse(Request.Method.GET, url, null, new
                 VolleyCallback() {
             @Override

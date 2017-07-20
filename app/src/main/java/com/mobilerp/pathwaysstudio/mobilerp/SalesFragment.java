@@ -41,6 +41,7 @@ public class SalesFragment extends Fragment {
     boolean isNewProduct;
 
     APIServer apiServer;
+    URLs URL = URLs.getInstance();
     ArrayList<SalesItem> items;
 
     Context context;
@@ -152,7 +153,7 @@ public class SalesFragment extends Fragment {
     }
 
     private void findLastScannedProduct() {
-        apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + lastBarcode, null, new VolleyCallback() {
+        apiServer.getResponse(Request.Method.GET, URLs.BASE_URL + URLs.FIND_PRODUCT + lastBarcode, null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
                 isNewProduct = false;

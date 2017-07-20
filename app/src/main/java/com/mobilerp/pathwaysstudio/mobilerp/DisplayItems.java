@@ -23,6 +23,7 @@ public class DisplayItems extends AppCompatActivity {
     ItemListAdapter itemListAdapter;
     ArrayList<ItemListModel> items;
     APIServer apiServer;
+    URLs URL = URLs.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class DisplayItems extends AppCompatActivity {
     }
 
     private void listProducts() {
-        String url = APIServer.BASE_URL + APIServer.LIST_PRODUCTS;
+        String url = URLs.BASE_URL + URLs.LIST_PRODUCTS;
         apiServer.getResponse(Request.Method.GET, url, null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
@@ -74,7 +75,7 @@ public class DisplayItems extends AppCompatActivity {
     }
 
     public void listDepleted(){
-        String url = APIServer.BASE_URL + APIServer.LIST_DEPLETED;
+        String url = URLs.BASE_URL + URLs.LIST_DEPLETED;
         apiServer.getResponse(Request.Method.GET, url, null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {

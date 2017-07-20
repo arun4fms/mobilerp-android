@@ -35,8 +35,28 @@ public class BarcodeScanner extends AppCompatActivity {
     String lastBarcode;
     CameraSettings settings;
     APIServer apiServer;
+    URLs URL = URLs.getInstance();
     TextView tvBarcode, tvBarcodeValue, tvPrice, tvTotal;
     EditText etName, etPrice, etTotal;
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if (result.getText() == null || result.getText().equals(lastBarcode)) {
+                return;
+            }
+
+            lastBarcode = result.getText();
+            barcodeView.setStatusText(lastBarcode);
+            beepManager.playBeepSoundAndVibrate();
+            findLastScannedProduct(result.getText());
+
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,29 +98,10 @@ public class BarcodeScanner extends AppCompatActivity {
         etTotal.setEnabled(false);
     }
 
-    private BarcodeCallback callback = new BarcodeCallback() {
-        @Override
-        public void barcodeResult(BarcodeResult result) {
-            if (result.getText() == null || result.getText().equals(lastBarcode)) {
-                return;
-            }
-
-            lastBarcode = result.getText();
-            barcodeView.setStatusText(lastBarcode);
-            beepManager.playBeepSoundAndVibrate();
-            findLastScannedProduct(result.getText());
-
-        }
-
-        @Override
-        public void possibleResultPoints(List<ResultPoint> resultPoints) {
-
-        }
-    };
-
     private void findLastScannedProduct(String barcode) {
         tvBarcodeValue.setText(barcode);
-        apiServer.getResponse(Request.Method.GET, APIServer.BASE_URL + APIServer.FIND_PRODUCT + barcode, null, new VolleyCallback() {
+        apiServer.getResponse(Request.Method.GET, URLs.BASE_URL + URLs.FIND_PRODUCT + barcode,
+                null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
                 isNewProduct = false;
@@ -147,7 +148,7 @@ public class BarcodeScanner extends AppCompatActivity {
                 jsonObject.put("name", etName.getText());
                 jsonObject.put("price", etPrice.getText());
                 jsonObject.put("units", etTotal.getText());
-                apiServer.getResponse(Request.Method.POST, APIServer.BASE_URL + APIServer.NEW_PRODUCT,
+                apiServer.getResponse(Request.Method.POST, URLs.BASE_URL + URLs.NEW_PRODUCT,
                         jsonObject, new VolleyCallback() {
                             @Override
                             public void onSuccessResponse(JSONObject result) {
@@ -166,7 +167,7 @@ public class BarcodeScanner extends AppCompatActivity {
             try {
                 jsonObject.put("price", etPrice.getText());
                 jsonObject.put("units", etTotal.getText());
-                apiServer.getResponse(Request.Method.PUT, APIServer.BASE_URL + APIServer
+                apiServer.getResponse(Request.Method.PUT, URLs.BASE_URL + URLs
                                 .UPDATE_PRODUCT + lastBarcode,
                         jsonObject, new VolleyCallback() {
                             @Override

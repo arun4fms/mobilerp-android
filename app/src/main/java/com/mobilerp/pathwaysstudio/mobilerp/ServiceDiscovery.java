@@ -43,7 +43,8 @@ public class ServiceDiscovery {
 
     private static final int NB_THREADS = 10;
     final Context context;
-    String LOG_TAG = "NetScan", netPrefix, finalHost;
+    final String LOG_TAG = "NetScan";
+    String netPrefix;
     int port;
     APIServer apiServer;
 
@@ -89,7 +90,6 @@ public class ServiceDiscovery {
 
     private Runnable pingRunnable(final String host) {
         return new Runnable() {
-            String url;
             public void run() {
                 try {
                     InetAddress inet = InetAddress.getByName(host);
@@ -97,8 +97,13 @@ public class ServiceDiscovery {
                         final String _url = "http:/" + (inet.toString() + ":" + String.valueOf
                                 (port));
                         if (testPort(inet)) {
-                            ExecutorService executor = Executors.newFixedThreadPool(2);
-                            executor.execute(testServer(_url));
+                            Log.d(LOG_TAG, "Successful connection to port 5000 @ " + _url);
+                            URLs URL = URLs.getInstance();
+                            URL.setBASE_URL(_url);
+                            Log.d(LOG_TAG, "BASE_URL set to :: " + _url);
+                            //testServer(_url);
+//                            ExecutorService executor = Executors.newFixedThreadPool(2);
+//                            executor.execute(testServer(_url));
                         }
                     }
                 } catch (UnknownHostException e) {
@@ -110,20 +115,15 @@ public class ServiceDiscovery {
         };
     }
 
-    private Runnable testServer(final String url) {
-        return new Runnable() {
-            @Override
-            public void run() {
+    private void testServer(final String url) {
+        Log.d(LOG_TAG, "Testing server response @ " + url);
                 apiServer.getResponse(false, Request.Method.GET, url,
                         null, new VolleyCallback() {
                             @Override
                             public void onSuccessResponse(JSONObject result) {
-                                if (result.has("mobilerp")) {
-                                    Log.d(LOG_TAG, "Server found at " + url);
-                                    //APIServer.setBASE_URL(url);
-                                } else {
-                                    Log.d(LOG_TAG, "Not a server " + url);
-                                }
+                                Log.d(LOG_TAG, "VALID SERVER @ " + url);
+                                URLs URL = URLs.getInstance();
+                                URL.setBASE_URL(url);
                             }
 
                             @Override
@@ -131,9 +131,30 @@ public class ServiceDiscovery {
                                 Log.d(LOG_TAG, "Why am I here? " + url);
                             }
                         });
-            }
-        };
     }
+
+//    private Runnable testServer(final String url) {
+//        return new Runnable() {
+//            @Override;
+//            public void run() {
+//                Log.d(LOG_TAG, "Testing server response @ " + url);
+//                apiServer.getResponse(false, Request.Method.GET, url,
+//                        null, new VolleyCallback() {
+//                            @Override
+//                            public void onSuccessResponse(JSONObject result) {
+//                                Log.d(LOG_TAG, "VALID SERVER @ " + url);
+//                                URLs URL = URLs.getInstance();
+//                                URL.setBASE_URL(url);
+//                            }
+//
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                Log.d(LOG_TAG, "Why am I here? " + url);
+//                            }
+//                        });
+//            }
+//        };
+//    }
 
     private boolean testPort(InetAddress ip) {
         try {

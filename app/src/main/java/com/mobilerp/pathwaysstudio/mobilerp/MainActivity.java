@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity
         user.setIsLoginIn(true);
 
         /*********************** SERVICE FINDER ***************************/
-        /* ds1 = new ServiceDiscovery(this);
-        ds1.doScan(); */
+        ds1 = new ServiceDiscovery(this);
+        ds1.doScan();
     }
 
     @Override

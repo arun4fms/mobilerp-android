@@ -145,7 +145,7 @@ public class SalesFragment extends Fragment {
     }
 
     private void endSale(){
-        FinishSell fragment = new FinishSell();
+        FinishSell fragment = FinishSell.newInstance(items);
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.main_content, fragment)
@@ -206,17 +206,5 @@ public class SalesFragment extends Fragment {
     public void onPause() {
         super.onPause();
         barcodeView.pause();
-    }
-
-    class SalesItem {
-        public String barcode;
-        public int amount;
-        public Double price;
-
-        public SalesItem(String barcode, int amount, Double price) {
-            this.barcode = barcode;
-            this.amount = amount;
-            this.price = price;
-        }
     }
 }

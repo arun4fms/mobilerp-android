@@ -69,7 +69,7 @@ public class FinishSell extends Fragment {
         initUI();
         if (items != null) {
             tvFinisSale.setText("Data retrieved successfully " + String.valueOf(items.size()) + "" +
-                    " items");
+                    " items\n" + items.get(0).barcode);
         } else {
             tvFinisSale.setText("Failed to receive data");
         }

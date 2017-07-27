@@ -138,7 +138,8 @@ public class SalesFragment extends Fragment {
     private void addProduct(){
         int amount = Integer.parseInt(etAmount.getText().toString());
         Double price = Double.parseDouble(tvPrice.getText().toString());
-        items.add(new SalesItem(lastBarcode, amount, price));
+        String name = tvName.getText().toString();
+        items.add(new SalesItem(lastBarcode, amount, price, name));
         totalSale += (items.get(items.size() - 1).price * amount);
         tvSale.setText(totalSale.toString());
         Toast.makeText(context, tvName.getText().toString() + " " + getString(R.string.added), Toast.LENGTH_LONG).show();

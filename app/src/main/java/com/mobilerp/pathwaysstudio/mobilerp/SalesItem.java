@@ -33,19 +33,24 @@ public class SalesItem implements Parcelable {
             return new SalesItem[size];
         }
     };
-    public String barcode;
+
     public int amount;
+    public String barcode;
+    public String name;
     public Double price;
 
-    public SalesItem(String barcode, int amount, Double price) {
+    public SalesItem(String barcode, int amount, Double price, String name) {
         this.barcode = barcode;
         this.amount = amount;
         this.price = price;
+        this.name = name;
     }
 
     protected SalesItem(Parcel in) {
         barcode = in.readString();
         amount = in.readInt();
+        price = in.readDouble();
+        name = in.readString();
     }
 
     @Override

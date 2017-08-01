@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 
 /**
@@ -35,6 +34,7 @@ import java.util.Map;
  */
 public class FinishSell extends Fragment {
 
+    final Fragment me = this;
     // Objects
     TextView tvTotalSale;
     ArrayList<SalesItem> items;
@@ -42,8 +42,6 @@ public class FinishSell extends Fragment {
     ListView lvSalesItems;
     ArrayList<ItemListModel> itemsListModel;
     Button btnEndSale;
-    final Fragment me = this;
-
     private OnFragmentInteractionListener mListener;
 
     public FinishSell() {
@@ -131,7 +129,8 @@ public class FinishSell extends Fragment {
             for (int i = 0; i < items.size(); i++) {
                 itemsListModel.add(new ItemListModel(items.get(i).name, items.get(i).price, items
                                 .get(i).amount));
-                total_sale += items.get(i).price;
+                total_sale += (items.get(i).price * items
+                        .get(i).amount);
             }
             itemListAdapter = new ItemListAdapter(getContext(), itemsListModel, R.layout.item_sales_row);
             lvSalesItems.setAdapter(itemListAdapter);

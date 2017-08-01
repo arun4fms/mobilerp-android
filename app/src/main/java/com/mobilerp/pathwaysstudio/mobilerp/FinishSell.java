@@ -5,12 +5,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 /**
@@ -23,17 +35,19 @@ import java.util.ArrayList;
  */
 public class FinishSell extends Fragment {
 
-    // UI objects
-    TextView tvFinisSale;
-
-    //
+    // Objects
+    TextView tvTotalSale;
     ArrayList<SalesItem> items;
+    ItemListAdapter itemListAdapter;
+    ListView lvSalesItems;
+    ArrayList<ItemListModel> itemsListModel;
+    Button btnEndSale;
+    final Fragment me = this;
 
     private OnFragmentInteractionListener mListener;
 
     public FinishSell() {
         // Required empty public constructor
-
     }
 
     public static FinishSell newInstance(ArrayList<SalesItem> _items) {
@@ -45,7 +59,52 @@ public class FinishSell extends Fragment {
     }
 
     private void initUI() {
-        tvFinisSale = (TextView) getView().findViewById(R.id.saleText);
+        getActivity().setTitle(R.string.finish_sale);
+        tvTotalSale = (TextView) getView().findViewById(R.id.totalSale);
+        lvSalesItems = (ListView)getView().findViewById(R.id.itemSalesList);
+        btnEndSale = (Button) getView().findViewById(R.id.finish_sale);
+        itemsListModel = new ArrayList<>();
+
+        btnEndSale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                APIServer apiServer = new APIServer(getContext());
+                URLs URL = URLs.getInstance();
+                JSONObject data = new JSONObject();
+                try {
+                    JSONArray barcode = new JSONArray();
+                    JSONArray units = new JSONArray();
+                    for (int i = 0; i < items.size(); i++) {
+                        barcode.put(i, items.get(i).barcode);
+                        units.put(i, items.get(i).amount);
+                    }
+                    data.put("barcode", barcode);
+                    data.put("units", units);
+                    Log.d("DATA", data.toString());
+                    apiServer.getResponse(Request.Method.POST, URLs.BASE_URL + URLs.MAKE_SALE,
+                            data, new VolleyCallback() {
+                                @Override
+                                public void onSuccessResponse(JSONObject result) {
+                                    Toast.makeText(getContext(), R.string.success, Toast
+                                            .LENGTH_LONG).show();
+                                    getActivity().setTitle(R.string.manager);
+                                    getActivity().getSupportFragmentManager()
+                                            .beginTransaction()
+                                            .remove(me)
+                                            .commit();
+                                }
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getContext(), R.string.fail, Toast
+                                            .LENGTH_LONG).show();
+                                }
+                            });
+                }catch (JSONException ignored){
+
+                }
+            }
+        });
     }
 
     @Override
@@ -68,10 +127,18 @@ public class FinishSell extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initUI();
         if (items != null) {
-            tvFinisSale.setText("Data retrieved successfully " + String.valueOf(items.size()) + "" +
-                    " items\n" + items.get(0).barcode);
+            double total_sale = 0.0;
+            for (int i = 0; i < items.size(); i++) {
+                itemsListModel.add(new ItemListModel(items.get(i).name, items.get(i).price, items
+                                .get(i).amount));
+                total_sale += items.get(i).price;
+            }
+            itemListAdapter = new ItemListAdapter(getContext(), itemsListModel, R.layout.item_sales_row);
+            lvSalesItems.setAdapter(itemListAdapter);
+            tvTotalSale.setText(getString(R.string.total_sale) + " : " + String.valueOf
+                    (total_sale));
         } else {
-            tvFinisSale.setText("Failed to receive data");
+            tvTotalSale.setText(R.string.data_fail);
         }
 
     }

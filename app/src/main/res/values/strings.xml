@@ -54,6 +54,8 @@
     <string name="server_settings">Server</string>
     <string name="server_config">Server configuration</string>
     <string name="user_settings">User settings</string>
+    <string name="finish_sale">Finish sale</string>
+    <string name="data_fail">"Failed to receive data"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

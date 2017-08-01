@@ -33,8 +33,8 @@ public class ItemListAdapter extends ArrayAdapter<ItemListModel> {
     private final Context context;
     private final ArrayList<ItemListModel> modelsArrayList;
 
-    public ItemListAdapter(Context context, ArrayList<ItemListModel> modelsArrayList) {
-        super(context, R.layout.item_row, modelsArrayList);
+    public ItemListAdapter(Context context, ArrayList<ItemListModel> modelsArrayList, int layout) {
+        super(context, layout, modelsArrayList);
         this.context = context;
         this.modelsArrayList = modelsArrayList;
     }

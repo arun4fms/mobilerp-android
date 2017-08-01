@@ -26,6 +26,7 @@ public class URLs {
     public static final String FIND_PRODUCT = "mobilerp/api/v1.0/findProduct/";
     public static final String NEW_PRODUCT = "mobilerp/api/v1.0/newProduct/";
     public static final String UPDATE_PRODUCT = "mobilerp/api/v1.0/updateProduct/";
+    public static final String MAKE_SALE = "mobilerp/api/v1.0/makeSale";
     public static String BASE_URL;
 
     private static URLs instance = null;

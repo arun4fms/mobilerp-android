@@ -150,6 +150,7 @@ public class SalesFragment extends Fragment {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.main_content, fragment)
+                .addToBackStack("Sales")
                 .commit();
     }
 

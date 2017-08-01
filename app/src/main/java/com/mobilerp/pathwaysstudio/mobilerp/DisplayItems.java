@@ -59,7 +59,7 @@ public class DisplayItems extends AppCompatActivity {
                         items.add(new ItemListModel(_itm.getString("name"), _itm.getDouble("price"), _itm.getInt("units")));
                     }
                     itemList = (ListView) findViewById(R.id.itemList);
-                    itemListAdapter = new ItemListAdapter(context, items);
+                    itemListAdapter = new ItemListAdapter(context, items, R.layout.item_row);
                     itemList.setAdapter(itemListAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -88,7 +88,7 @@ public class DisplayItems extends AppCompatActivity {
                         items.add(new ItemListModel(_itm.getString("name"), _itm.getDouble("price"), _itm.getInt("units")));
                     }
                     itemList = (ListView) findViewById(R.id.itemList);
-                    itemListAdapter = new ItemListAdapter(context, items);
+                    itemListAdapter = new ItemListAdapter(context, items, R.layout.item_row);
                     itemList.setAdapter(itemListAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();

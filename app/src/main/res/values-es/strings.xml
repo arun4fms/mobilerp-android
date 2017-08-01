@@ -53,4 +53,6 @@
     <string name="server_settings">Servidor</string>
     <string name="server_config">Configuration del servidor</string>
     <string name="user_settings">Ajustes de usuario</string>
+    <string name="finish_sale">Terminar venta</string>
+    <string name="data_fail">Falló al recibir datos</string>
 </resources>

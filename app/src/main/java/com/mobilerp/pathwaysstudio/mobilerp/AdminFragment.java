@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TabHost;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
 
 
 /**
@@ -52,7 +54,8 @@ public class AdminFragment extends Fragment {
 
         // Pharmacy list setup
         pharmacyList = (ListView) getView().findViewById(R.id.lvPharmacyOptions);
-        pharmacyListAdapter = new OptionListAdapter(getContext(), pharmacyList());
+        pharmacyListAdapter = new OptionListAdapter(getContext(), pharmacyList
+                ());
         pharmacyList.setAdapter(pharmacyListAdapter);
         pharmacyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -65,16 +68,19 @@ public class AdminFragment extends Fragment {
                         startActivity(intent);
                         break;
                     case 1:
-                        intent = new Intent(getContext(), DisplayItems.class);
-                        intent.putExtra("ENDPOINT", pharmacyListAdapter.getItem(position)
-                                .getEndpoint());
-                        startActivity(intent);
+                        ListItems fragment = ListItems.newInstance(pharmacyListAdapter.getItem(position).getEndpoint());
+                        FragmentManager manager = getFragmentManager();
+                        manager.beginTransaction()
+                                .replace(R.id.main_content, fragment)
+                                .commit();
                         break;
                     case 2:
-                        intent = new Intent(getContext(), DisplayItems.class);
-                        intent.putExtra("ENDPOINT", pharmacyListAdapter.getItem(position)
+                        fragment = ListItems.newInstance(pharmacyListAdapter.getItem(position)
                                 .getEndpoint());
-                        startActivity(intent);
+                        manager = getFragmentManager();
+                        manager.beginTransaction()
+                                .replace(R.id.main_content, fragment)
+                                .commit();
                         break;
                     default:
                         Toast.makeText(getContext(), "DAYUM " + position,
@@ -89,6 +95,7 @@ public class AdminFragment extends Fragment {
         salesList = (ListView) getView().findViewById(R.id.lvSalesOptions);
         salesListAdapter = new OptionListAdapter(getContext(), salesList());
         salesList.setAdapter(salesListAdapter);
+        getActivity().setTitle(R.string.title_activity_admin);
 
     }
 

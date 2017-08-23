@@ -20,14 +20,14 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 public class URLs {
 
-    public static final String LOGIN = "api/v1.0/user/checkLogin";
-    public static final String LIST_PRODUCTS = "api/v1.0/listProducts";
-    public static final String LIST_DEPLETED = "api/v1.0/listDepletedProducts";
-    public static final String FIND_PRODUCT = "api/v1.0/findProduct";
-    public static final String NEW_PRODUCT = "api/v1.0/newProduct";
-    public static final String UPDATE_PRODUCT = "api/v1.0/updateProduct";
-    public static final String MAKE_SALE = "api/v1.0/makeSale";
-    public static String BASE_URL;
+    public static final String LOGIN = "api/v1.0/user/checkLogin/";
+    public static final String LIST_PRODUCTS = "api/v1.0/listProducts/";
+    public static final String LIST_DEPLETED = "api/v1.0/listDepletedProducts/";
+    public static final String FIND_PRODUCT = "api/v1.0/findProduct/";
+    public static final String NEW_PRODUCT = "api/v1.0/newProduct/";
+    public static final String UPDATE_PRODUCT = "api/v1.0/updateProduct/";
+    public static final String MAKE_SALE = "api/v1.0/makeSale/";
+    public static String BASE_URL = null;
 
     private static URLs instance = null;
 

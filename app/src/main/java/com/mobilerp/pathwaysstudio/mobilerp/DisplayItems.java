@@ -35,13 +35,14 @@ public class DisplayItems extends AppCompatActivity {
         apiServer = new APIServer(context);
         String endpoint = getIntent().getStringExtra("ENDPOINT");
         items = new ArrayList<>();
-        //Toast.makeText(this, R.string.wait_string + " " + endpoint, Toast.LENGTH_SHORT).show();
 
         if (endpoint.equals("LISTPRODUCTS")) {
-           listProducts();
+            listProducts();
+            this.setTitle(R.string.drug_list);
         }
         if (endpoint.equals("LISTDEPLETED")){
             listDepleted();
+            this.setTitle(R.string.depleted_stock);
         }
     }
 
@@ -102,10 +103,4 @@ public class DisplayItems extends AppCompatActivity {
             }
         });
     }
-
-//    private ArrayList<ItemListModel> putItemsInList(){
-//        ArrayList<ItemListModel> model = new ArrayList<>();
-//
-//    }
-
 }

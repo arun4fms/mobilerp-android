@@ -90,18 +90,21 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .replace(R.id.main_content, fragment)
+                    .addToBackStack("MainView")
                     .commit();
         } else if (id == R.id.nav_manager) {
             AdminFragment fragment = new AdminFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .replace(R.id.main_content, fragment)
+                    .addToBackStack("MainView")
                     .commit();
         } else if (id == R.id.nav_settings) {
             PreferenceFragmentCompat fragment = new SettingsFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .replace(R.id.main_content, fragment)
+                    .addToBackStack("MainView")
                     .commit();
         } else if (id == R.id.nav_send) {
 

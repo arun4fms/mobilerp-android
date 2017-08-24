@@ -1,7 +1,6 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -62,24 +61,21 @@ public class AdminFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        Intent intent = new Intent(getContext(), BarcodeScanner.class);
-                        intent.putExtra("ENDPOINT", pharmacyListAdapter.getItem(position)
-                                .getEndpoint());
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        ListItems fragment = ListItems.newInstance(pharmacyListAdapter.getItem(position).getEndpoint());
+                        Fragment fragment = new StockUpdate();
                         FragmentManager manager = getFragmentManager();
                         manager.beginTransaction()
                                 .replace(R.id.main_content, fragment)
+                                .addToBackStack("Admin")
                                 .commit();
                         break;
+                    case 1:
                     case 2:
-                        fragment = ListItems.newInstance(pharmacyListAdapter.getItem(position)
-                                .getEndpoint());
+                        fragment = ListItems.newInstance(pharmacyListAdapter
+                                .getItem(position).getEndpoint());
                         manager = getFragmentManager();
                         manager.beginTransaction()
                                 .replace(R.id.main_content, fragment)
+                                .addToBackStack("Admin")
                                 .commit();
                         break;
                     default:

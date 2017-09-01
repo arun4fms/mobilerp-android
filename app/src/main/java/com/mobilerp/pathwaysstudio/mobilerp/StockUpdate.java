@@ -247,6 +247,7 @@ public class StockUpdate extends Fragment {
         barcodeView.decodeSingle(callback);
     }
 
+
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);

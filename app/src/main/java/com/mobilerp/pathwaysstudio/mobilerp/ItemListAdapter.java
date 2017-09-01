@@ -48,23 +48,41 @@ public class ItemListAdapter extends ArrayAdapter<ItemListModel> {
         View rowView;
 
         if (!modelsArrayList.get(position).getIsGroupHeader()) {
-            rowView = inflater.inflate(R.layout.item_row, parent, false);
+            if (modelsArrayList.get(position).getDate() == null) {
+                rowView = inflater.inflate(R.layout.item_row, parent, false);
 
-            TextView itemNameView = (TextView) rowView.findViewById(R.id.itemName);
-            TextView itemPriceView = (TextView) rowView.findViewById(R.id.itemPrice);
-            TextView itemTotalView = (TextView) rowView.findViewById(R.id.itemTotal);
+                TextView itemNameView = (TextView) rowView.findViewById(R.id.itemName);
+                TextView itemPriceView = (TextView) rowView.findViewById(R.id.itemPrice);
+                TextView itemTotalView = (TextView) rowView.findViewById(R.id.itemTotal);
 
-            itemNameView.setText(modelsArrayList.get(position).getName());
-            itemPriceView.setText(modelsArrayList.get(position).getPriceString());
-            itemTotalView.setText(modelsArrayList.get(position).getTotalString());
+                itemNameView.setText(modelsArrayList.get(position).getName());
+                itemPriceView.setText(modelsArrayList.get(position).getPriceString());
+                itemTotalView.setText(modelsArrayList.get(position).getTotalString());
+            } else {
+                rowView = inflater.inflate(R.layout.depleted_items_layout, parent, false);
+
+                TextView itemNameView = (TextView) rowView.findViewById(R.id.itemName);
+                TextView itemLastSaleDate = (TextView) rowView.findViewById(R.id.itemLastSaleDate);
+
+                itemNameView.setText(modelsArrayList.get(position).getName());
+                itemLastSaleDate.setText(modelsArrayList.get(position).getDate().toString());
+            }
         } else {
-            rowView = inflater.inflate(R.layout.list_header_multi_items, parent, false);
-            TextView itemTitleView = (TextView) rowView.findViewById(R.id.itemName);
-            TextView itemPriceView = (TextView) rowView.findViewById(R.id.itemPrice);
-            TextView itemTotalView = (TextView) rowView.findViewById(R.id.itemTotal);
-            itemTitleView.setText(R.string.item_name);
-            itemPriceView.setText(R.string.item_price);
-            itemTotalView.setText(R.string.item_total);
+            if (modelsArrayList.get(position).getName().equals("title")) {
+                rowView = inflater.inflate(R.layout.list_header_multi_items, parent, false);
+                TextView itemTitleView = (TextView) rowView.findViewById(R.id.itemName);
+                TextView itemPriceView = (TextView) rowView.findViewById(R.id.itemPrice);
+                TextView itemTotalView = (TextView) rowView.findViewById(R.id.itemTotal);
+                itemTitleView.setText(R.string.item_name);
+                itemPriceView.setText(R.string.item_price);
+                itemTotalView.setText(R.string.item_total);
+            } else {
+                rowView = inflater.inflate(R.layout.list_header_depleted_items, parent, false);
+                TextView itemTitleView = (TextView) rowView.findViewById(R.id.itemName);
+                TextView itemLastSaleDate = (TextView) rowView.findViewById(R.id.itemDate);
+                itemTitleView.setText(R.string.item_name);
+                itemLastSaleDate.setText(R.string.last_sale_date);
+            }
         }
 
         return rowView;

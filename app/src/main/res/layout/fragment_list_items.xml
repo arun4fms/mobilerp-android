@@ -6,6 +6,12 @@
               android:orientation="vertical"
               tools:context="com.mobilerp.pathwaysstudio.mobilerp.ListItems">
 
+    <Button
+        android:id="@+id/btn_download_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pdf_export"/>
+
     <ListView
         android:id="@+id/itemList"
         android:layout_width="match_parent"

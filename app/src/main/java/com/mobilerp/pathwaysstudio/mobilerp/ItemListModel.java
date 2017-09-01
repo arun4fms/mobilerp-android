@@ -24,6 +24,7 @@ public class ItemListModel {
     private Double price;
     private Integer total;
     private String barcode = null;
+    private String date = null;
 
     private boolean isGroupHeader = false;
 
@@ -42,6 +43,11 @@ public class ItemListModel {
     public ItemListModel(String barcode, String name, Double price, Integer total) {
         this(name, price, total);
         this.setBarcode(barcode);
+    }
+
+    public ItemListModel(String name, String date) {
+        this.name = name;
+        this.date = date;
     }
 
     public boolean getIsGroupHeader() {
@@ -94,5 +100,13 @@ public class ItemListModel {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

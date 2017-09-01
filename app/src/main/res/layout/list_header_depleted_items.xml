@@ -16,22 +16,12 @@
         android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/itemPrice"
+        android:id="@+id/itemDate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="210dp"
-        android:gravity="center_vertical"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/itemTotal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="290dp"
         android:gravity="center_vertical"
         android:textSize="18sp"/>
 

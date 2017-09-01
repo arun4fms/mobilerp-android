@@ -1,7 +1,6 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -70,7 +69,6 @@ public class APIServer {
             public Map<String, String> getHeaders() throws com.android.volley.AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("Authorization", USER.getAuthString());
-                Log.d("PARAMS", params.toString());
                 return params;
             }
         };

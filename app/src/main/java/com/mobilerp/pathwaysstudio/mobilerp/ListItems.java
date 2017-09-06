@@ -15,24 +15,13 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -43,7 +32,7 @@ import java.util.HashMap;
  * Use the {@link ListItems#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListItems extends Fragment implements Response.Listener<byte[]>, Response.ErrorListener {
+public class ListItems extends Fragment {
 
     ListView itemList;
     ItemListAdapter itemListAdapter;
@@ -51,13 +40,11 @@ public class ListItems extends Fragment implements Response.Listener<byte[]>, Re
     APIServer apiServer;
     URLs URL = URLs.getInstance();
     String endpoint;
-    String reportURL;
+    String reportURL, reportName;
     Button btnDownloadPDF;
-    InputStreamVolleyRequest request;
     int count;
 
     private OnFragmentInteractionListener mListener;
-
 
     public ListItems() {
         // Required empty public constructor
@@ -82,11 +69,14 @@ public class ListItems extends Fragment implements Response.Listener<byte[]>, Re
 
         if (endpoint.equals("LISTPRODUCTS")) {
             listProducts();
+            reportURL = URLs.BASE_URL + URLs.SALES_REPORT;
+            reportName = "salesreport.pdf";
             getActivity().setTitle(R.string.drug_list);
         }
         if (endpoint.equals("LISTDEPLETED")) {
             listDepleted();
             reportURL = URLs.BASE_URL + URLs.DEPLETED_REPORT;
+            reportName = "depletedreport.pdf";
             getActivity().setTitle(R.string.depleted_stock);
         }
     }
@@ -99,13 +89,14 @@ public class ListItems extends Fragment implements Response.Listener<byte[]>, Re
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Download started", Toast.LENGTH_LONG).show();
-                request = new InputStreamVolleyRequest(Request.Method.GET, reportURL, ListItems
-                        .this, ListItems.this, null);
-                RequestQueue rq = Volley.newRequestQueue(getContext(), new HurlStack());
-                rq.add(request);
+                new DownloadFileFromURL().execute(reportURL, reportName);
+                if (!Environment.getExternalStorageState().equals(
+                        Environment.MEDIA_MOUNTED)) {
+                    Log.d("DOWN_ERR", "SD \n" + Environment.getExternalStorageState());
+                    return;
+                }
             }
         });
-
     }
 
     @Override
@@ -188,60 +179,6 @@ public class ListItems extends Fragment implements Response.Listener<byte[]>, Re
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-
-    }
-
-    @Override
-    public void onResponse(byte[] response) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        try {
-            if (response != null) {
-
-                //Read file name from headers
-                String content = request.responseHeaders.get("Content-Disposition");
-                StringTokenizer st = new StringTokenizer(content, "=");
-                String[] arrTag = st.toArray();
-
-                String filename = arrTag[1];
-                filename = filename.replace(":", ".");
-                Log.d("DEBUG::RESUME FILE NAME", filename);
-
-                try {
-                    long lenghtOfFile = response.length;
-
-                    //covert reponse to input stream
-                    InputStream input = new ByteArrayInputStream(response);
-                    File path = Environment.getExternalStorageDirectory();
-                    File file = new File(path, filename);
-                    map.put("resume_path", file.toString());
-                    BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
-                    byte data[] = new byte[1024];
-
-                    long total = 0;
-
-                    while ((count = input.read(data)) != -1) {
-                        total += count;
-                        output.write(data, 0, count);
-                    }
-
-                    output.flush();
-
-                    output.close();
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                }
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            Log.d("KEY_ERROR", "UNABLE TO DOWNLOAD FILE");
-            e.printStackTrace();
-        }
     }
 
     /**

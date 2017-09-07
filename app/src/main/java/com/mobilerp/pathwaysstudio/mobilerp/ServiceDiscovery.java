@@ -1,6 +1,7 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
@@ -44,6 +45,8 @@ public class ServiceDiscovery {
     private static final int NB_THREADS = 10;
     final Context context;
     final String LOG_TAG = "NetScan";
+    final String prefsFile;
+    final String server_addr;
     String netPrefix;
     int port;
     APIServer apiServer;
@@ -54,6 +57,8 @@ public class ServiceDiscovery {
         this.netPrefix = "";
         this.port = 5000;
         apiServer = new APIServer(this.context);
+        prefsFile = context.getString(R.string.preferences_file);
+        server_addr = context.getString(R.string.server_addr);
 
 
         if (context != null) {
@@ -101,6 +106,11 @@ public class ServiceDiscovery {
                             URLs URL = URLs.getInstance();
                             URL.setBASE_URL(_url);
                             Log.d(LOG_TAG, "BASE_URL set to :: " + _url);
+                            SharedPreferences sharedPrefs = context.getSharedPreferences(prefsFile, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPrefs.edit();
+                            editor.putString(server_addr, _url);
+                            editor.commit();
+                            Log.d(LOG_TAG, "Wrote to prefs file" + _url);
                             //testServer(_url);
 //                            ExecutorService executor = Executors.newFixedThreadPool(2);
 //                            executor.execute(testServer(_url));

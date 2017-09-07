@@ -61,4 +61,9 @@
     <string name="depleted_report_filename">depleted_report_</string>
     <string name="last_sale_date">Last sale date</string>
     <string name="download_finished">Download finished</string>
+    <string name="preferences_file">Settings</string>
+    <string name="use_offline_mode">Use offline mode</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

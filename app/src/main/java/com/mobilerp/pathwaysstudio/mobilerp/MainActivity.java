@@ -1,5 +1,7 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,10 +10,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FinishSell.OnFragmentInteractionListener {
@@ -42,8 +44,19 @@ public class MainActivity extends AppCompatActivity
 
         /*********************** SERVICE FINDER ***************************/
         if (URLs.BASE_URL == null) {
-            ds1 = new ServiceDiscovery(this);
-            ds1.doScan();
+            Context context = getApplicationContext();
+            SharedPreferences sharedPrefs = context.getSharedPreferences(getString(R.string
+                    .preferences_file), Context.MODE_PRIVATE);
+            String serverAddress = sharedPrefs.getString(getString(R.string.server_addr), null);
+            if (serverAddress == null) {
+                Toast.makeText(getApplicationContext(), "Buscando servidor", Toast.LENGTH_LONG);
+                ds1 = new ServiceDiscovery(this);
+                ds1.doScan();
+            } else {
+                Toast.makeText(getApplicationContext(), "Cargando direccion desde preferencias", Toast.LENGTH_LONG);
+                URLs URL = URLs.getInstance();
+                URL.setBASE_URL(serverAddress);
+            }
         }
     }
 
@@ -100,7 +113,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack("MainView")
                     .commit();
         } else if (id == R.id.nav_settings) {
-            PreferenceFragmentCompat fragment = new SettingsFragment();
+            Settings fragment = new Settings();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .replace(R.id.main_content, fragment)

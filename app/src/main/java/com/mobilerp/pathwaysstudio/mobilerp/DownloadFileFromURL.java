@@ -13,6 +13,18 @@ import java.net.URLConnection;
 
 public class DownloadFileFromURL extends AsyncTask<String, String, String> {
 
+    private FileDownloadListener listener;
+
+    public DownloadFileFromURL(FileDownloadListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        listener.onFileDownloaded();
+    }
+
     /**
      * Downloading file in background thread
      */
@@ -25,7 +37,7 @@ public class DownloadFileFromURL extends AsyncTask<String, String, String> {
             conection.connect();
             InputStream input = new BufferedInputStream(url.openStream(), 8192);
             File SDCardRoot = Environment.getExternalStorageDirectory();
-            SDCardRoot = new File(SDCardRoot.getAbsolutePath() + "/plus");
+            SDCardRoot = new File(SDCardRoot.getAbsolutePath() + "/MobilERP");
             SDCardRoot.mkdir();
             File file = new File(SDCardRoot, f_url[1]);
             FileOutputStream output = new FileOutputStream(file);

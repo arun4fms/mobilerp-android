@@ -56,7 +56,8 @@
     <string name="finish_sale">Terminar venta</string>
     <string name="data_fail">Falló al recibir datos</string>
     <string name="pdf_export">Exportar a PDF</string>
-    <string name="sales_report_filename">salesreport.pdf</string>
-    <string name="depleted_report_filename">depletedreport.pdf</string>
+    <string name="sales_report_filename">reporte_ventas_</string>
+    <string name="depleted_report_filename">reporte_productos_agotados_</string>
     <string name="last_sale_date">Última fecha de venta</string>
+    <string name="download_finished">Descarga terminada</string>
 </resources>

@@ -57,7 +57,8 @@
     <string name="finish_sale">Finish sale</string>
     <string name="data_fail">"Failed to receive data"</string>
     <string name="pdf_export">Export to PDF</string>
-    <string name="sales_report_filename">salesreport.pdf</string>
-    <string name="depleted_report_filename">depletedreport.pdf</string>
+    <string name="sales_report_filename">sales_report_</string>
+    <string name="depleted_report_filename">depleted_report_</string>
     <string name="last_sale_date">Last sale date</string>
+    <string name="download_finished">Download finished</string>
 </resources>

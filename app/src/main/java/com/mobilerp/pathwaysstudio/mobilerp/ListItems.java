@@ -21,7 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -70,13 +72,13 @@ public class ListItems extends Fragment {
         if (endpoint.equals("LISTPRODUCTS")) {
             listProducts();
             reportURL = URLs.BASE_URL + URLs.SALES_REPORT;
-            reportName = "salesreport.pdf";
+            reportName = getString(R.string.sales_report_filename);
             getActivity().setTitle(R.string.drug_list);
         }
         if (endpoint.equals("LISTDEPLETED")) {
             listDepleted();
             reportURL = URLs.BASE_URL + URLs.DEPLETED_REPORT;
-            reportName = "depletedreport.pdf";
+            reportName = getString(R.string.depleted_report_filename);
             getActivity().setTitle(R.string.depleted_stock);
         }
     }
@@ -89,7 +91,15 @@ public class ListItems extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Download started", Toast.LENGTH_LONG).show();
-                new DownloadFileFromURL().execute(reportURL, reportName);
+                SimpleDateFormat date = new SimpleDateFormat("dd-MM-yy");
+                Date now = new Date();
+                DownloadFileFromURL fileDownloader = new DownloadFileFromURL(new FileDownloadListener() {
+                    @Override
+                    public void onFileDownloaded() {
+                        Toast.makeText(getContext(), R.string.download_finished, Toast.LENGTH_LONG);
+                    }
+                });
+                fileDownloader.execute(reportURL, reportName + date.format(now) + ".pdf");
                 if (!Environment.getExternalStorageState().equals(
                         Environment.MEDIA_MOUNTED)) {
                     Log.d("DOWN_ERR", "SD \n" + Environment.getExternalStorageState());
@@ -164,22 +174,12 @@ public class ListItems extends Fragment {
         });
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

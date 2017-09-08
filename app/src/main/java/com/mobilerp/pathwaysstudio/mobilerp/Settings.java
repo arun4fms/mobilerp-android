@@ -3,9 +3,11 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.SQLHandler;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.DownloadFileFromURL;
@@ -35,6 +38,7 @@ public class Settings extends Fragment {
     EditText etServerAddr;
     Button btnScanServer, btnBackupDB;
     CheckBox cbOfflineMode;
+    AppBarLayout ablMainBar;
 
 
     public Settings() {
@@ -58,6 +62,7 @@ public class Settings extends Fragment {
         String serverAddress = sharedPrefs.getString(getString(R.string.server_addr), null);
         Boolean useOfflineMode = sharedPrefs.getBoolean(getString(R.string.use_offline_mode),
                 false);
+        ablMainBar = (AppBarLayout) getView().findViewById(R.id.ablMainBar);
         etServerAddr = (EditText) getView().findViewById(R.id.etServerAddr);
         etServerAddr.setText(serverAddress);
 
@@ -137,7 +142,7 @@ public class Settings extends Fragment {
                 Boolean useOfflineMode;
                 useOfflineMode = cbOfflineMode.isChecked();
                 if (useOfflineMode) {
-                    SQLHandler handler = new SQLHandler(context);
+                    SQLHandler handler = SQLHandler.getInstance(getContext());
                     if (handler.isDatabaseOpen())
                         Toast.makeText(context, (useOfflineMode) ? R.string.offline_mode_enabled : R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
                     else {
@@ -150,6 +155,10 @@ public class Settings extends Fragment {
                 }
                 editor.putBoolean(getString(R.string.use_offline_mode), useOfflineMode);
                 editor.apply();
+                if (useOfflineMode)
+                    ablMainBar.setBackgroundColor(Color.DKGRAY);
+                else
+                    ablMainBar.setBackgroundColor(Color.BLUE);
             }
         });
     }

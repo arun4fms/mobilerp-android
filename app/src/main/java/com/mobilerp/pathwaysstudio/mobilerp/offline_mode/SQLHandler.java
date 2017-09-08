@@ -30,14 +30,26 @@ import java.io.File;
 public class SQLHandler {
 
     private SQLiteDatabase mydatabase;
-    private boolean databaseOpen;
-    private Context context;
+    private static boolean databaseOpen;
+    private static Context context;
+    private static SQLHandler instance;
 
-    public SQLHandler(Context context) {
-        this.context = context;
-        File SDCardRoot = Environment.getExternalStorageDirectory();
-        SDCardRoot = new File(SDCardRoot.getAbsolutePath() + "/MobilERP");
-        File file = new File(SDCardRoot, context.getString(R.string.database_name));
+    public static SQLHandler getInstance(Context _context){
+        context = _context;
+        if (instance == null || !instance.isDatabaseOpen()){
+                instance = new SQLHandler();
+        } else {
+            File foo = instance.checkFile();
+            if (!foo.exists()){
+                databaseOpen = false;
+                instance = new SQLHandler();
+            }
+        }
+        return instance;
+    }
+
+    protected SQLHandler() {
+        File file = checkFile();
         if (!file.exists()) {
             Toast.makeText(context, R.string.no_db_file, Toast.LENGTH_LONG).show();
             databaseOpen = false;
@@ -45,6 +57,13 @@ public class SQLHandler {
             mydatabase = SQLiteDatabase.openDatabase(file.getPath(), null, 1);
             databaseOpen = mydatabase.isOpen();
         }
+    }
+
+    public static File checkFile(){
+        File SDCardRoot = Environment.getExternalStorageDirectory();
+        SDCardRoot = new File(SDCardRoot.getAbsolutePath() + "/MobilERP");
+        File file = new File(SDCardRoot, context.getString(R.string.database_name));
+        return file;
     }
 
     public boolean isDatabaseOpen() {

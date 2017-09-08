@@ -6,6 +6,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
@@ -50,6 +51,7 @@ public class ServiceDiscovery {
     String netPrefix;
     int port;
     APIServer apiServer;
+    boolean serverFound;
 
     public ServiceDiscovery(Context context) {
 
@@ -71,6 +73,11 @@ public class ServiceDiscovery {
             String ipString = Formatter.formatIpAddress(ipAddress);
             netPrefix = ipString.substring(0, ipString.lastIndexOf(".") + 1);
         }
+
+    }
+
+    public boolean isServerFound() {
+        return serverFound;
     }
 
     public void doScan() {
@@ -88,6 +95,8 @@ public class ServiceDiscovery {
             executor.awaitTermination(60 * 1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ignored) {
         }
+
+        Toast.makeText(context, "Scan finished", Toast.LENGTH_LONG).show();
 
         Log.i(LOG_TAG, "Scan finished");
 
@@ -111,6 +120,7 @@ public class ServiceDiscovery {
                             editor.putString(server_addr, _url);
                             editor.commit();
                             Log.d(LOG_TAG, "Wrote to prefs file" + _url);
+
                             //testServer(_url);
 //                            ExecutorService executor = Executors.newFixedThreadPool(2);
 //                            executor.execute(testServer(_url));

@@ -29,6 +29,7 @@ public class URLs {
     public static final String MAKE_SALE = "api/v1.0/makeSale/";
     public static final String SALES_REPORT = "api/v1.0/getReport/salesreport.pdf";
     public static final String DEPLETED_REPORT = "api/v1.0/getReport/depletedreport.pdf";
+    public static final String DB_BACKUP = "api/v1.0/dbBackup/";
     public static String BASE_URL = null;
 
     private static URLs instance = null;

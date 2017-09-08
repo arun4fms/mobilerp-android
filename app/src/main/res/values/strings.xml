@@ -63,6 +63,13 @@
     <string name="download_finished">Download finished</string>
     <string name="preferences_file">Settings</string>
     <string name="use_offline_mode">Use offline mode</string>
+    <string name="searching_server">Searching for server</string>
+    <string name="server_addr_updated">Server address updated</string>
+    <string name="backup_database">Backup database</string>
+    <string name="database_name">mobilerp.db</string>
+    <string name="no_db_file">No database file found</string>
+    <string name="offline_mode_enabled">Offline mode enabled</string>
+    <string name="offline_mode_disabled">Offline mode disabled</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

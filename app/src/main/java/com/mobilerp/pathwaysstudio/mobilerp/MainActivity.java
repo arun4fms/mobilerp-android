@@ -119,10 +119,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.main_content, fragment)
                     .addToBackStack("MainView")
                     .commit();
-        } else if (id == R.id.nav_send) {
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

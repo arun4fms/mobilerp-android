@@ -62,4 +62,11 @@
     <string name="download_finished">Descarga terminada</string>
     <string name="preferences_file">settings</string>
     <string name="use_offline_mode">Usar modo fuera de línea</string>
+    <string name="searching_server">Buscando servidor</string>
+    <string name="server_addr_updated">Dirección del servidor actualizada</string>
+    <string name="backup_database">Respaldar base de datos</string>
+    <string name="database_name">mobilerp.db</string>
+    <string name="no_db_file">No se encontro la base de datos</string>
+    <string name="offline_mode_enabled">Modo fuera de línea activado</string>
+    <string name="offline_mode_disabled">Modo fuera de línea desactivado</string>
 </resources>

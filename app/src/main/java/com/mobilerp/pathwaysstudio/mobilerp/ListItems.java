@@ -96,7 +96,7 @@ public class ListItems extends Fragment {
                 DownloadFileFromURL fileDownloader = new DownloadFileFromURL(new FileDownloadListener() {
                     @Override
                     public void onFileDownloaded() {
-                        Toast.makeText(getContext(), R.string.download_finished, Toast.LENGTH_LONG);
+                        Toast.makeText(getContext(), R.string.download_finished, Toast.LENGTH_LONG).show();
                     }
                 });
                 fileDownloader.execute(reportURL, reportName + date.format(now) + ".pdf");

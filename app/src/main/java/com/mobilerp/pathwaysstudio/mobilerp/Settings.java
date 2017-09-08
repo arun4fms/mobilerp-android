@@ -20,6 +20,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.SQLHandler;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.DownloadFileFromURL;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.FileDownloadListener;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.ServiceDiscovery;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,29 +127,30 @@ public class Settings extends Fragment {
         cbOfflineMode = (CheckBox) getView().findViewById(R.id.cbOfflineMode);
         cbOfflineMode.setChecked(useOfflineMode);
         Toast.makeText(getContext(), (useOfflineMode) ? getString(R.string.offline_mode_enabled) : getString(R.string.offline_mode_disabled), Toast.LENGTH_LONG).show();
-
-//        cbOfflineMode.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Context context = getContext();
-//                SharedPreferences sharedPrefs = context.getSharedPreferences(getString(R.string
-//                        .preferences_file), Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sharedPrefs.edit();
-//                Boolean useOfflineMode;
-//                useOfflineMode = cbOfflineMode.isChecked();
-//                if (!useOfflineMode) {
-//                    SQLHandler handler = new SQLHandler(context);
-//                    if (handler.isDatabaseOpen())
-//                        Toast.makeText(context, (useOfflineMode) ? R.string.offline_mode_enabled : R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
-//                    else
-//                        Toast.makeText(context, R.string.no_db_file, Toast.LENGTH_LONG).show();
-//                } else{
-//                    useOfflineMode = !useOfflineMode;
-//                    Toast.makeText(context, R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
-//                }
-//                editor.putBoolean(getString(R.string.use_offline_mode), useOfflineMode);
-//                editor.apply();
-//            }
-//        });
+        cbOfflineMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = getContext();
+                SharedPreferences sharedPrefs = context.getSharedPreferences(getString(R.string
+                        .preferences_file), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                Boolean useOfflineMode;
+                useOfflineMode = cbOfflineMode.isChecked();
+                if (useOfflineMode) {
+                    SQLHandler handler = new SQLHandler(context);
+                    if (handler.isDatabaseOpen())
+                        Toast.makeText(context, (useOfflineMode) ? R.string.offline_mode_enabled : R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
+                    else {
+                        Toast.makeText(context, R.string.no_db_file, Toast.LENGTH_LONG).show();
+                        useOfflineMode = false;
+                        cbOfflineMode.setChecked(useOfflineMode);
+                    }
+                } else {
+                    Toast.makeText(context, R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
+                }
+                editor.putBoolean(getString(R.string.use_offline_mode), useOfflineMode);
+                editor.apply();
+            }
+        });
     }
 }

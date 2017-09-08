@@ -1,4 +1,4 @@
-package com.mobilerp.pathwaysstudio.mobilerp;
+package com.mobilerp.pathwaysstudio.mobilerp.online_mode;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -7,6 +7,8 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.mobilerp.pathwaysstudio.mobilerp.R;
+import com.mobilerp.pathwaysstudio.mobilerp.User;
 
 import org.json.JSONObject;
 

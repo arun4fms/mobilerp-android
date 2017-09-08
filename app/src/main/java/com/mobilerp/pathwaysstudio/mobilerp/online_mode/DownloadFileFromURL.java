@@ -1,8 +1,10 @@
-package com.mobilerp.pathwaysstudio.mobilerp;
+package com.mobilerp.pathwaysstudio.mobilerp.online_mode;
 
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+
+import com.mobilerp.pathwaysstudio.mobilerp.User;
 
 import java.io.BufferedInputStream;
 import java.io.File;

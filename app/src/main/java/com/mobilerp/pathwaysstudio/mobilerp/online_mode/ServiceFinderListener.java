@@ -1,11 +1,7 @@
-package com.mobilerp.pathwaysstudio.mobilerp;
-
-import com.android.volley.VolleyError;
-
-import org.json.JSONObject;
+package com.mobilerp.pathwaysstudio.mobilerp.online_mode;
 
 /**
- * Created by Eligio Becerra on 15/06/2017.
+ * Created by Eligio Becerra on 12/07/2017.
  * Copyright (C) 2017 Eligio Becerra
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +18,6 @@ import org.json.JSONObject;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public interface VolleyCallback {
-    void onSuccessResponse(JSONObject result);
-
-    void onErrorResponse(VolleyError error);
+public interface ServiceFinderListener {
+    void notifyOfServerCompleted(final Thread thread);
 }

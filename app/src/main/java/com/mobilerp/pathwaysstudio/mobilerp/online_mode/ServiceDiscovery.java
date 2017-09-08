@@ -1,4 +1,4 @@
-package com.mobilerp.pathwaysstudio.mobilerp;
+package com.mobilerp.pathwaysstudio.mobilerp.online_mode;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.mobilerp.pathwaysstudio.mobilerp.R;
 
 import org.json.JSONObject;
 

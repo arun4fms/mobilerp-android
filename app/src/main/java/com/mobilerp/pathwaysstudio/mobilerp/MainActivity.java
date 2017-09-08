@@ -15,6 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.ServiceDiscovery;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FinishSell.OnFragmentInteractionListener {
 

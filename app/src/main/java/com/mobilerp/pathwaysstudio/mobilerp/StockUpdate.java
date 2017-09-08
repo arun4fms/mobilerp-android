@@ -21,6 +21,9 @@ import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.camera.CameraSettings;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.APIServer;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
+import com.mobilerp.pathwaysstudio.mobilerp.online_mode.VolleyCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;

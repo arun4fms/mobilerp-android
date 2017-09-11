@@ -2,8 +2,6 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -21,7 +19,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.SQLHandler;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.DownloadFileFromURL;
@@ -39,6 +36,7 @@ public class Settings extends Fragment {
     Button btnScanServer, btnBackupDB;
     CheckBox cbOfflineMode;
     AppBarLayout ablMainBar;
+    SettingsManager manager;
 
 
     public Settings() {
@@ -57,11 +55,11 @@ public class Settings extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Context context = getContext();
-        SharedPreferences sharedPrefs = context.getSharedPreferences(getString(R.string
-                .preferences_file), Context.MODE_PRIVATE);
-        String serverAddress = sharedPrefs.getString(getString(R.string.server_addr), null);
-        Boolean useOfflineMode = sharedPrefs.getBoolean(getString(R.string.use_offline_mode),
-                false);
+        manager = SettingsManager.getInstance(context);
+
+        String serverAddress = manager.getString(getString(R.string.server_addr));
+        Boolean useOfflineMode = manager.getBoolean(getString(R.string.use_offline_mode));
+
         ablMainBar = (AppBarLayout) getView().findViewById(R.id.ablMainBar);
         etServerAddr = (EditText) getView().findViewById(R.id.etServerAddr);
         etServerAddr.setText(serverAddress);
@@ -75,14 +73,8 @@ public class Settings extends Fragment {
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context
                             .INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    SharedPreferences sharedPrefs = context.getSharedPreferences(getString(R.string
-                            .preferences_file), Context.MODE_PRIVATE);
 
-                    SharedPreferences.Editor editor = sharedPrefs.edit();
-
-                    editor.putString(getString(R.string.server_addr), etServerAddr.getText().toString());
-
-                    editor.apply();
+                    manager.saveString(getString(R.string.server_addr), etServerAddr.getText().toString());
 
                     Toast.makeText(getContext(), R.string.server_addr_updated, Toast
                             .LENGTH_LONG).show();
@@ -95,15 +87,12 @@ public class Settings extends Fragment {
         btnScanServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), R.string.searching_server, Toast.LENGTH_LONG).show();
-
                 Context context = getContext();
-                SharedPreferences sharedPrefs = context.getSharedPreferences(getString(R.string
-                        .preferences_file), Context.MODE_PRIVATE);
 
+                Toast.makeText(context, R.string.searching_server, Toast.LENGTH_LONG).show();
                 ServiceDiscovery ds = new ServiceDiscovery(context);
                 ds.doScan();
-                String serverAddress = sharedPrefs.getString(getString(R.string.server_addr), null);
+                String serverAddress = manager.getString(getString(R.string.server_addr));
                 etServerAddr.setText(serverAddress);
 
             }
@@ -136,13 +125,11 @@ public class Settings extends Fragment {
             @Override
             public void onClick(View v) {
                 Context context = getContext();
-                SharedPreferences sharedPrefs = context.getSharedPreferences(getString(R.string
-                        .preferences_file), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPrefs.edit();
+                SettingsManager manager = SettingsManager.getInstance(context);
                 Boolean useOfflineMode;
                 useOfflineMode = cbOfflineMode.isChecked();
                 if (useOfflineMode) {
-                    SQLHandler handler = SQLHandler.getInstance(getContext());
+                    SQLHandler handler = SQLHandler.getInstance(context);
                     if (handler.isDatabaseOpen())
                         Toast.makeText(context, (useOfflineMode) ? R.string.offline_mode_enabled : R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
                     else {
@@ -153,12 +140,7 @@ public class Settings extends Fragment {
                 } else {
                     Toast.makeText(context, R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
                 }
-                editor.putBoolean(getString(R.string.use_offline_mode), useOfflineMode);
-                editor.apply();
-                if (useOfflineMode)
-                    ablMainBar.setBackgroundColor(Color.DKGRAY);
-                else
-                    ablMainBar.setBackgroundColor(Color.BLUE);
+                manager.saveBoolean(getString(R.string.use_offline_mode), useOfflineMode);
             }
         });
     }

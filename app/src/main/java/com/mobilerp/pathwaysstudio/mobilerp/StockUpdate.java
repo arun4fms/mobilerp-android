@@ -47,6 +47,8 @@ public class StockUpdate extends Fragment {
     TextView tvBarcode, tvBarcodeValue, tvPrice, tvTotal;
     EditText etName, etPrice, etTotal;
     Button btnSave;
+    //final boolean isOfflineEnabled = ;
+
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {

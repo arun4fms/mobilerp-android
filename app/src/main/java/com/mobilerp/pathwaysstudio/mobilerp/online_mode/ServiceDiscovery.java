@@ -1,7 +1,6 @@
 package com.mobilerp.pathwaysstudio.mobilerp.online_mode;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
@@ -11,6 +10,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.mobilerp.pathwaysstudio.mobilerp.R;
+import com.mobilerp.pathwaysstudio.mobilerp.SettingsManager;
 
 import org.json.JSONObject;
 
@@ -49,6 +49,7 @@ public class ServiceDiscovery {
     final String LOG_TAG = "NetScan";
     final String prefsFile;
     final String server_addr;
+    final SettingsManager manager;
     String netPrefix;
     int port;
     APIServer apiServer;
@@ -62,6 +63,8 @@ public class ServiceDiscovery {
         apiServer = new APIServer(this.context);
         prefsFile = context.getString(R.string.preferences_file);
         server_addr = context.getString(R.string.server_addr);
+        manager = SettingsManager.getInstance(context);
+
 
 
         if (context != null) {
@@ -82,7 +85,7 @@ public class ServiceDiscovery {
     }
 
     public void doScan() {
-        Log.i(LOG_TAG, "Start scanning");
+        Toast.makeText(context, "Start scanning", Toast.LENGTH_LONG).show();
 
         ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);
         for (int dest = 0; dest < 255; dest++) {
@@ -90,7 +93,7 @@ public class ServiceDiscovery {
             executor.execute(pingRunnable(host));
         }
 
-        Log.i(LOG_TAG, "Waiting for executor to terminate...");
+        Toast.makeText(context, "Waiting for executor to terminate...", Toast.LENGTH_LONG).show();
         executor.shutdown();
         try {
             executor.awaitTermination(60 * 1000, TimeUnit.MILLISECONDS);
@@ -98,9 +101,6 @@ public class ServiceDiscovery {
         }
 
         Toast.makeText(context, "Scan finished", Toast.LENGTH_LONG).show();
-
-        Log.i(LOG_TAG, "Scan finished");
-
     }
 
     private Runnable pingRunnable(final String host) {
@@ -116,11 +116,9 @@ public class ServiceDiscovery {
                             URLs URL = URLs.getInstance();
                             URL.setBASE_URL(_url);
                             Log.d(LOG_TAG, "BASE_URL set to :: " + _url);
-                            SharedPreferences sharedPrefs = context.getSharedPreferences(prefsFile, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPrefs.edit();
-                            editor.putString(server_addr, _url);
-                            editor.commit();
-                            Log.d(LOG_TAG, "Wrote to prefs file" + _url);
+
+                            manager.saveString(server_addr, _url);
+                            Log.d(LOG_TAG, "Wrote to prefs file :: " + _url);
 
                             //testServer(_url);
 //                            ExecutorService executor = Executors.newFixedThreadPool(2);

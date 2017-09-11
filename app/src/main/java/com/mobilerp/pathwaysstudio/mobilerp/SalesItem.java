@@ -39,6 +39,21 @@ public class SalesItem implements Parcelable {
     public String name;
     public Double price;
 
+    public String TABLE_NAME = "Product";
+    public String COLUMN_NAME_BARCODE = "barcode";
+    public String COLUMN_NAME_AMOUNT = "amount";
+    public String COLUMN_NAME_PRICE = "price";
+    public String COLUMN_NAME_NAME = "name";
+
+    /**
+     * Basic constructor
+     *
+     * @param barcode
+     * @param amount
+     * @param price
+     * @param name
+     */
+
     public SalesItem(String barcode, int amount, Double price, String name) {
         this.barcode = barcode;
         this.amount = amount;
@@ -55,12 +70,16 @@ public class SalesItem implements Parcelable {
 
     @Override
     public int describeContents() {
-        return 0;
+        return 0    ;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(barcode);
         dest.writeInt(amount);
+    }
+
+    public void InsertItem() {
+
     }
 }

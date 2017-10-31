@@ -70,4 +70,16 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cbOfflineMode"/>
 
+    <Button
+        android:id="@+id/btnUploadPendingOps"
+        android:layout_width="308dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/sync_pending_operations"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBackupDB"/>
+
 </android.support.constraint.ConstraintLayout>

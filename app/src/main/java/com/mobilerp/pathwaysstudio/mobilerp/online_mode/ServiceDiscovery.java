@@ -51,6 +51,7 @@ public class ServiceDiscovery {
     final String server_addr;
     final SettingsManager manager;
     String netPrefix;
+    WifiManager wm;
     int port;
     APIServer apiServer;
     boolean serverFound;
@@ -69,7 +70,7 @@ public class ServiceDiscovery {
 
         if (context != null) {
 
-            WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo connectionInfo = wm.getConnectionInfo();
             Log.d("NET_NAME", wm.getConnectionInfo().getSSID());
             Log.d("NET_NAME", String.valueOf(wm.getConnectionInfo().getNetworkId()));
@@ -85,6 +86,11 @@ public class ServiceDiscovery {
     }
 
     public void doScan() {
+        if (wm.getWifiState() == WifiManager.WIFI_STATE_DISABLED || wm.getWifiState() == WifiManager.WIFI_STATE_UNKNOWN) {
+            Log.d("NET_NAME", "NOT CONNECTED");
+            Toast.makeText(context, R.string.not_connected, Toast.LENGTH_LONG).show();
+            return;
+        }
         Toast.makeText(context, "Start scanning", Toast.LENGTH_LONG).show();
 
         ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);

@@ -51,7 +51,7 @@ public class Update {
         if (!isQueryReady) {
             return false;
         }
-        sqlHandler.mydatabase.execSQL(this.query);
+        sqlHandler.db.execSQL(this.query);
         return true;
     }
 }

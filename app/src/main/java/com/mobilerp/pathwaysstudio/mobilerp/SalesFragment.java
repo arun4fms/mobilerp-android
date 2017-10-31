@@ -169,7 +169,7 @@ public class SalesFragment extends Fragment {
                     tvPrice.setText(_itm.getString("price"));
                     etAmount.setText("1");
                 } catch (JSONException e) {
-                    Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.srv_err_404_not_found, Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -182,7 +182,7 @@ public class SalesFragment extends Fragment {
     }
 
     private void cleanEntries(){
-        Toast.makeText(context, R.string.success, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, R.string.srv_op_success, Toast.LENGTH_LONG).show();
         tvName.setText("");
         tvPrice.setText("");
         tvSale.setText("");

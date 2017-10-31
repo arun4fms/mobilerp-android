@@ -32,7 +32,7 @@ public class SQLHandler {
     private static boolean databaseOpen;
     private static Context context;
     private static SQLHandler instance;
-    public SQLiteDatabase mydatabase;
+    public SQLiteDatabase db;
 
     protected SQLHandler() {
         File file = checkFile();
@@ -40,8 +40,8 @@ public class SQLHandler {
             Toast.makeText(context, R.string.no_db_file, Toast.LENGTH_LONG).show();
             databaseOpen = false;
         } else {
-            mydatabase = SQLiteDatabase.openDatabase(file.getPath(), null, 1);
-            databaseOpen = mydatabase.isOpen();
+            db = SQLiteDatabase.openDatabase(file.getPath(), null, SQLiteDatabase.OPEN_READWRITE);
+            databaseOpen = db.isOpen();
         }
     }
 

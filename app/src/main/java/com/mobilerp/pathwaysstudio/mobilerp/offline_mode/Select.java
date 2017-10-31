@@ -43,7 +43,8 @@ public class Select {
     public boolean execute() {
         if (query == null)
             return false;
-        results = sqlHandler.mydatabase.rawQuery(query, null);
+        results = sqlHandler.db.rawQuery(query, null);
+        results.moveToFirst();
         return true;
     }
 }

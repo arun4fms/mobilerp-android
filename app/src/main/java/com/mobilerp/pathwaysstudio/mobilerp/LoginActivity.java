@@ -75,12 +75,12 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     if (result.getBoolean("logged")) {
                         user.setIsLoginIn(true);
-                        Toast.makeText(context, R.string.success, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, R.string.srv_op_success, Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(context, MainActivity.class);
                         startActivity(intent);
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(context, R.string.fail, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.srv_op_fail, Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.OperationsLog;
 import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.SQLHandler;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.DownloadFileFromURL;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.FileDownloadListener;
@@ -33,7 +34,7 @@ import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
 public class Settings extends Fragment {
 
     EditText etServerAddr;
-    Button btnScanServer, btnBackupDB;
+    Button btnScanServer, btnBackupDB, btnUpladPendingOps;
     CheckBox cbOfflineMode;
     AppBarLayout ablMainBar;
     SettingsManager manager;
@@ -54,7 +55,7 @@ public class Settings extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Context context = getContext();
+        final Context context = getContext();
         manager = SettingsManager.getInstance(context);
 
         String serverAddress = manager.getString(getString(R.string.server_addr));
@@ -141,6 +142,15 @@ public class Settings extends Fragment {
                     Toast.makeText(context, R.string.offline_mode_disabled, Toast.LENGTH_LONG).show();
                 }
                 manager.saveBoolean(getString(R.string.use_offline_mode), useOfflineMode);
+            }
+        });
+
+        btnUpladPendingOps = (Button) getView().findViewById(R.id.btnUploadPendingOps);
+        btnUpladPendingOps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OperationsLog log = OperationsLog.getInstance(context);
+                log.pushOperations();
             }
         });
     }

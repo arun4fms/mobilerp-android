@@ -80,11 +80,11 @@ public class APIServer {
 
     public void genericErrors(int errorCode) {
         if (errorCode == 401)
-            Toast.makeText(context, R.string._401_access_denied, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.srv_err_401_access_denied, Toast.LENGTH_LONG).show();
         if (errorCode == 500)
-            Toast.makeText(context, R.string._500_server_error, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.srv_err_500_server_error, Toast.LENGTH_LONG).show();
         if (errorCode == 404)
-            Toast.makeText(context, R.string._404_not_found, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.srv_err_404_not_found, Toast.LENGTH_LONG).show();
     }
 
     public void getResponse(boolean no_auth, int method, String url, JSONObject jsonValues, final

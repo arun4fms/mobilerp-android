@@ -4,6 +4,7 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,10 @@ import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.camera.CameraSettings;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Insert;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.OperationsLog;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.SQLHandler;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Select;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.APIServer;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.VolleyCallback;
@@ -30,12 +35,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Locale;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StockUpdate extends Fragment {
+public class StockUpdate extends Fragment implements View.OnClickListener {
 
     boolean isNewProduct;
     DecoratedBarcodeView barcodeView;
@@ -47,7 +53,8 @@ public class StockUpdate extends Fragment {
     TextView tvBarcode, tvBarcodeValue, tvPrice, tvTotal;
     EditText etName, etPrice, etTotal;
     Button btnSave;
-    //final boolean isOfflineEnabled = ;
+    boolean isOfflineEnabled;
+    OperationsLog log;
 
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
@@ -60,7 +67,6 @@ public class StockUpdate extends Fragment {
             barcodeView.setStatusText(lastBarcode);
             beepManager.playBeepSoundAndVibrate();
             findLastScannedProduct(result.getText());
-
         }
 
         @Override
@@ -83,6 +89,10 @@ public class StockUpdate extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstance) {
+        // Offline Mode
+        isOfflineEnabled = SettingsManager.getInstance(getContext()).getBoolean
+                (getString(R.string.use_offline_mode));
+
         // Camera settings
         settings = new CameraSettings();
         settings.setFocusMode(CameraSettings.FocusMode.MACRO);
@@ -117,56 +127,16 @@ public class StockUpdate extends Fragment {
         etPrice.setEnabled(false);
         etTotal.setEnabled(false);
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONObject jsonObject = new JSONObject();
-                if (isNewProduct) {
-                    try {
-                        jsonObject.put("barcode", lastBarcode);
-                        jsonObject.put("name", etName.getText());
-                        jsonObject.put("price", etPrice.getText());
-                        jsonObject.put("units", etTotal.getText());
-                        apiServer.getResponse(Request.Method.POST, URLs.BASE_URL + URLs.NEW_PRODUCT,
-                                jsonObject, new VolleyCallback() {
-                                    @Override
-                                    public void onSuccessResponse(JSONObject result) {
-                                        cleanEntries();
-                                    }
+        if (isOfflineEnabled) {
+            Toast.makeText(getContext(), getString(R
+                    .string.offline_mode_enabled), Toast.LENGTH_LONG).show();
+            log = OperationsLog.getInstance(getContext());
+        } else {
+            Toast.makeText(getContext(), getString(R
+                    .string.offline_mode_disabled), Toast.LENGTH_LONG).show();
+        }
 
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getContext(), R.string.fail, Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        jsonObject.put("price", etPrice.getText());
-                        jsonObject.put("units", etTotal.getText());
-                        apiServer.getResponse(Request.Method.PUT, URLs.BASE_URL + URLs
-                                        .UPDATE_PRODUCT + lastBarcode,
-                                jsonObject, new VolleyCallback() {
-                                    @Override
-                                    public void onSuccessResponse(JSONObject result) {
-                                        cleanEntries();
-                                    }
-
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getContext(), R.string.fail, Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                    } catch (JSONException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-
-
+        btnSave.setOnClickListener(this);
     }
 
     @Override
@@ -177,35 +147,140 @@ public class StockUpdate extends Fragment {
 
     private void findLastScannedProduct(String barcode) {
         tvBarcodeValue.setText(barcode);
-        apiServer.getResponse(Request.Method.GET, URLs.BASE_URL + URLs.FIND_PRODUCT + barcode,
-                null, new VolleyCallback() {
-                    @Override
-                    public void onSuccessResponse(JSONObject result) {
-                        isNewProduct = false;
-                        try {
-                            JSONArray _itms = result.getJSONArray("mobilerp");
-                            JSONObject _itm = _itms.getJSONObject(0);
-                            etName.setText(_itm.getString("name"));
-                            etPrice.setText(_itm.getString("price"));
-                            enableEntries();
-                        } catch (JSONException e) {
-                            Toast.makeText(getContext(), R.string._404_not_found, Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
+        if (!isOfflineEnabled) {
+            apiServer.getResponse(Request.Method.GET, URLs.BASE_URL + URLs.FIND_PRODUCT + barcode,
+                    null, new VolleyCallback() {
+                        @Override
+                        public void onSuccessResponse(JSONObject result) {
+                            isNewProduct = false;
+                            try {
+                                JSONArray _itms = result.getJSONArray("mobilerp");
+                                JSONObject _itm = _itms.getJSONObject(0);
+                                etName.setText(_itm.getString("name"));
+                                etPrice.setText(_itm.getString("price"));
+                                enableEntries();
+                            } catch (JSONException e) {
+                                Toast.makeText(getContext(), R.string.srv_err_404_not_found, Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        NetworkResponse response = error.networkResponse;
-                        if (response.statusCode == 404) {
-                            Toast.makeText(getContext(), R.string._404_not_found, Toast.LENGTH_LONG).show();
-                            isNewProduct = true;
-                            enableEntries();
-                        } else {
-                            apiServer.genericErrors(response.statusCode);
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            NetworkResponse response = error.networkResponse;
+                            if (response.statusCode == 404) {
+                                Toast.makeText(getContext(), R.string.srv_err_404_not_found, Toast.LENGTH_LONG).show();
+                                isNewProduct = true;
+                                enableEntries();
+                            } else {
+                                apiServer.genericErrors(response.statusCode);
+                            }
                         }
+                    });
+        } else {
+            isNewProduct = false;
+            SQLHandler db = SQLHandler.getInstance(getContext());
+            if (db.isDatabaseOpen()) {
+                Select select = new Select(getContext());
+                select.setQuery("SELECT name, price FROM Product WHERE barcode='" + barcode + "'");
+                if (select.execute()) {
+                    if (select.results.getCount() > 0) {
+                        Toast.makeText(getContext(), getString(R
+                                .string.app_op_success), Toast.LENGTH_LONG).show();
+                        etName.setText(select.results.getString(0));
+                        etPrice.setText(String.valueOf(select.results.getFloat(1)));
+                        enableEntries();
+                    } else {
+                        isNewProduct = true;
+                        Toast.makeText(getContext(), getString(R.string.app_err_not_found), Toast
+                                .LENGTH_LONG).show();
+                        enableEntries();
                     }
-                });
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject = prepareJSON();
+        if (!isOfflineEnabled) {
+            if (isNewProduct) {
+                apiServer.getResponse(Request.Method.POST, URLs.BASE_URL + URLs.NEW_PRODUCT,
+                        jsonObject, new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(JSONObject result) {
+                                cleanEntries();
+                            }
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getContext(), R.string.srv_op_fail, Toast.LENGTH_LONG).show();
+                            }
+                        });
+            } else {
+                apiServer.getResponse(Request.Method.PUT, URLs.BASE_URL + URLs
+                                .UPDATE_PRODUCT + lastBarcode,
+                        jsonObject, new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(JSONObject result) {
+                                cleanEntries();
+                            }
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getContext(), R.string.srv_op_fail, Toast.LENGTH_LONG).show();
+                            }
+                        });
+            }
+        } else {
+            if (isNewProduct) {
+                log.add(Request.Method.POST, URLs.NEW_PRODUCT, jsonObject);
+                cleanEntries();
+                Insert insert = new Insert(getContext());
+                try {
+                    String q = String.format(Locale.getDefault(), "INSERT INTO Product(barcode," +
+                                    " name, " +
+                                    "price, " +
+                                    "units) " +
+                                    "values('%s', '%s', %s, %s);", jsonObject.getString("barcode"),
+                            jsonObject.getString("name"), jsonObject.getString("price"), jsonObject
+                                    .getString("units"));
+                    insert.setQuery(q);
+                    insert.execute();
+                    Log.d("SQL Query :: ", insert.getQuery());
+                    Toast.makeText(getContext(), R.string.app_op_success, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    Log.d("JSON_EXEC", e.getMessage());
+                }
+            } else {
+                log.add(Request.Method.PUT, URLs
+                        .UPDATE_PRODUCT + lastBarcode, jsonObject);
+                cleanEntries();
+                Toast.makeText(getContext(), R.string.app_op_success, Toast.LENGTH_LONG).show();
+                // TODO: ADD UPDATE TO DB
+            }
+        }
+    }
+
+    private JSONObject prepareJSON() {
+        JSONObject object = new JSONObject();
+        try {
+            if (isNewProduct) {
+                object.put("barcode", lastBarcode);
+                object.put("name", etName.getText());
+                object.put("price", etPrice.getText());
+                object.put("units", etTotal.getText());
+            } else {
+                object.put("price", etPrice.getText());
+                object.put("units", etTotal.getText());
+            }
+            return object;
+        } catch (JSONException ex) {
+            Log.d("JSON_ERROR", ex.toString());
+        }
+        return object;
     }
 
     private void enableEntries() {
@@ -218,7 +293,7 @@ public class StockUpdate extends Fragment {
     }
 
     private void cleanEntries() {
-        Toast.makeText(getContext(), R.string.success, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), R.string.srv_op_success, Toast.LENGTH_LONG).show();
         etName.setText("");
         etPrice.setText("");
         etTotal.setText("");
@@ -251,7 +326,6 @@ public class StockUpdate extends Fragment {
     public void triggerScan(View view) {
         barcodeView.decodeSingle(callback);
     }
-
 
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {

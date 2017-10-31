@@ -86,7 +86,7 @@ public class FinishSell extends Fragment {
                             data, new VolleyCallback() {
                                 @Override
                                 public void onSuccessResponse(JSONObject result) {
-                                    Toast.makeText(getContext(), R.string.success, Toast
+                                    Toast.makeText(getContext(), R.string.srv_op_success, Toast
                                             .LENGTH_LONG).show();
                                     getActivity().setTitle(R.string.manager);
                                     getActivity().getSupportFragmentManager()
@@ -97,7 +97,7 @@ public class FinishSell extends Fragment {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getContext(), R.string.fail, Toast
+                                    Toast.makeText(getContext(), R.string.srv_op_fail, Toast
                                             .LENGTH_LONG).show();
                                 }
                             });

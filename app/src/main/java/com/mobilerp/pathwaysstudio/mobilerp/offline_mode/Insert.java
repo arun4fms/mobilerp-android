@@ -41,7 +41,7 @@ public class Insert {
     public boolean execute() {
         if (query == null)
             return false;
-        sqlHandler.mydatabase.execSQL(this.query);
+        sqlHandler.db.execSQL(this.query);
         return true;
     }
 }

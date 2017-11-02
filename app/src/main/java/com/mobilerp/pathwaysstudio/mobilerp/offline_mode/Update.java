@@ -41,10 +41,9 @@ public class Update {
         return this.query;
     }
 
-    public void setQuery(String... params) {
-//        if ((params.length % 2) != 0)
-//            isQueryReady = false;
-//        this.query = q;
+    // TODO: Write update query builder
+    public void setQuery(String q /*String... params*/) {
+        this.query = q;
     }
 
     public boolean execute() {

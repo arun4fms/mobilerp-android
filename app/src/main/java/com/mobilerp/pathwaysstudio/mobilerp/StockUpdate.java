@@ -26,6 +26,7 @@ import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Insert;
 import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.OperationsLog;
 import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.SQLHandler;
 import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Select;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Update;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.APIServer;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.VolleyCallback;
@@ -107,7 +108,7 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
         //Server init
         apiServer = new APIServer(getContext());
 
-        // Init elements to display items
+        // -- INIT elements to display items
         tvBarcode = (TextView) getView().findViewById(R.id.tvBarcode);
         tvBarcodeValue = (TextView) getView().findViewById(R.id.tvBarcodeValue);
         tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
@@ -126,6 +127,8 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
         etName.setEnabled(false);
         etPrice.setEnabled(false);
         etTotal.setEnabled(false);
+
+        // ----- END OF INIT -----
 
         if (isOfflineEnabled) {
             Toast.makeText(getContext(), getString(R
@@ -147,6 +150,7 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
 
     private void findLastScannedProduct(String barcode) {
         tvBarcodeValue.setText(barcode);
+        // -- FIND SCANNED PRODUCT ONLINE --
         if (!isOfflineEnabled) {
             apiServer.getResponse(Request.Method.GET, URLs.BASE_URL + URLs.FIND_PRODUCT + barcode,
                     null, new VolleyCallback() {
@@ -178,6 +182,7 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
                         }
                     });
         } else {
+            // -- FIND SCANNED PRODUCT OFFLINE --
             isNewProduct = false;
             SQLHandler db = SQLHandler.getInstance(getContext());
             if (db.isDatabaseOpen()) {
@@ -205,8 +210,10 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         JSONObject jsonObject = new JSONObject();
         jsonObject = prepareJSON();
+        // -- FIND SCANNED PRODUCT ONLINE --
         if (!isOfflineEnabled) {
             if (isNewProduct) {
+                // -- NEW PRODUCT SAVED TO SERVER --
                 apiServer.getResponse(Request.Method.POST, URLs.BASE_URL + URLs.NEW_PRODUCT,
                         jsonObject, new VolleyCallback() {
                             @Override
@@ -220,6 +227,7 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
                             }
                         });
             } else {
+                // -- PRODUCT UPDATED TO SERVER --
                 apiServer.getResponse(Request.Method.PUT, URLs.BASE_URL + URLs
                                 .UPDATE_PRODUCT + lastBarcode,
                         jsonObject, new VolleyCallback() {
@@ -235,7 +243,10 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
                         });
             }
         } else {
+            // -- FIND PRODUCT OFFLINE --
             if (isNewProduct) {
+                // -- NEW PRODUCT SAVED LOCALLY --
+                // -- OPERATION ADDED TO LOGFILE --
                 log.add(Request.Method.POST, URLs.NEW_PRODUCT, jsonObject);
                 cleanEntries();
                 Insert insert = new Insert(getContext());
@@ -255,11 +266,29 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
                     Log.d("JSON_EXEC", e.getMessage());
                 }
             } else {
+                // -- PRODUCT UPDATED LOCALLY --
+                // -- OPERATION SAVED TO LOG--
+                // TODO: ADD UPDATE TO DB -- DONE??
                 log.add(Request.Method.PUT, URLs
                         .UPDATE_PRODUCT + lastBarcode, jsonObject);
                 cleanEntries();
-                Toast.makeText(getContext(), R.string.app_op_success, Toast.LENGTH_LONG).show();
-                // TODO: ADD UPDATE TO DB
+                Update update = new Update(getContext());
+                try {
+                    String q = String.format(Locale.getDefault(), "UPDATE Product " +
+                                    "SET name='%s', " +
+                                    "price=%s, " +
+                                    "units=%s " +
+                                    "WHERE barcode='%s';",
+                            jsonObject.getString("name"),
+                            jsonObject.getString("price"),
+                            jsonObject.getString("units"),
+                            jsonObject.getString("barcode"));
+                    update.setQuery(q);
+                    update.execute();
+                    Toast.makeText(getContext(), R.string.app_op_success, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), R.string.app_op_fail, Toast.LENGTH_LONG).show();
+                }
             }
         }
     }

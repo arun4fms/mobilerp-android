@@ -73,6 +73,8 @@
     <string name="searching_server">Searching for server</string>
     <string name="server_addr_updated">Server address updated</string>
     <string name="download_finished">Download finished</string>
+    <string name="offline_mode_enabled">Offline mode enabled</string>
+    <string name="offline_mode_disabled">Offline mode disabled</string>
 
     <!-- Server Messages -->
     <string name="srv_err_404_not_found">Item not found</string>

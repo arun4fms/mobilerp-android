@@ -45,6 +45,7 @@ public class FinishSell extends Fragment {
     ListView lvSalesItems;
     ArrayList<ItemListModel> itemsListModel;
     Button btnEndSale;
+
     private OnFragmentInteractionListener mListener;
 
     public FinishSell() {

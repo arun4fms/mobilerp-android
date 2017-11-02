@@ -1,5 +1,7 @@
 package com.mobilerp.pathwaysstudio.mobilerp;
 
+import android.content.Context;
+
 /**
  * Created by Eligio Becerra on 01/11/2017.
  * Copyright (C) 2017 Eligio Becerra
@@ -20,38 +22,47 @@ package com.mobilerp.pathwaysstudio.mobilerp;
 
 public class AppState {
 
-    public static void setHasPendingOperations
-    private static boolean isAppOffline;
-    private static AppState instance;
-    private static boolean hasPendingOperations;
 
-    {
-
-    }
+    private static AppState instance = null;
+    private static Context context;
+    private boolean offlineMode;
+    private boolean hasPendingOperations;
 
     protected AppState() {
-        isAppOffline = SettingsManager.getInstance(getContext()).getBoolean
-                (getString(R.string.use_offline_mode));
-        isAppOffline = SettingsManager.getInstance(getContext()).getBoolean
-                (getString(R.string.has_pending_ops));
+        offlineMode = SettingsManager.getInstance(context).getBoolean
+                (context.getString(R.string.use_offline_mode));
+        hasPendingOperations = SettingsManager.getInstance(context).getBoolean
+                (context.getString(R.string.has_pending_ops));
     }
 
-    public static AppState getInstance() {
+    public static AppState getInstance(Context c) {
+        context = c;
         if (instance == null)
             instance = new AppState();
         return instance;
     }
 
-    public static boolean HasPendingOperations() {
+    public void setHasPendingOperations(boolean v) {
+        SettingsManager.getInstance(context).saveBoolean(context.getString(R.string
+                .has_pending_ops), v);
+        hasPendingOperations = v;
+    }
+
+    public boolean HasPendingOperations() {
         return hasPendingOperations;
     }
 
-    public static boolean isIsAppOffline() {
-        return isAppOffline;
+    public boolean isOfflineMode() {
+        return offlineMode;
     }
 
-    public static void setIsAppOffline(boolean v) {
-        isAppOffline = v;
+    public void setOfflineMode(boolean v) {
+        SettingsManager.getInstance(context).saveBoolean(context.getString(R.string
+                .use_offline_mode), v);
+        offlineMode = v;
     }
 
+    public void flushContext() {
+        context = null;
+    }
 }

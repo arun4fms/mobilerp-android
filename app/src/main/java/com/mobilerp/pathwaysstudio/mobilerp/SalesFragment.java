@@ -22,6 +22,8 @@ import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.camera.CameraSettings;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.SQLHandler;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Select;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.APIServer;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.VolleyCallback;
@@ -46,6 +48,7 @@ public class SalesFragment extends Fragment {
     APIServer apiServer;
     URLs URL = URLs.getInstance();
     ArrayList<SalesItem> items;
+    AppState appState;
 
     Context context;
     DecoratedBarcodeView barcodeView;
@@ -100,6 +103,11 @@ public class SalesFragment extends Fragment {
 
         beepManager = new BeepManager(getActivity());
 
+        // Get settings
+        appState = AppState.getInstance(context);
+        if (appState.isOfflineMode()) Toast.makeText(context, R.string.offline_mode_enabled, 1)
+                .show();
+
         //Server init
         apiServer = new APIServer(context);
 
@@ -149,6 +157,7 @@ public class SalesFragment extends Fragment {
     }
 
     private void endSale(){
+        appState.flushContext();
         FinishSell fragment = FinishSell.newInstance(items);
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction()
@@ -158,27 +167,46 @@ public class SalesFragment extends Fragment {
     }
 
     private void findLastScannedProduct() {
-        apiServer.getResponse(Request.Method.GET, URLs.BASE_URL + URLs.FIND_PRODUCT + lastBarcode, null, new VolleyCallback() {
-            @Override
-            public void onSuccessResponse(JSONObject result) {
-                isNewProduct = false;
-                try {
-                    JSONArray _itms = result.getJSONArray("mobilerp");
-                    JSONObject _itm = _itms.getJSONObject(0);
-                    tvName.setText(_itm.getString("name"));
-                    tvPrice.setText(_itm.getString("price"));
-                    etAmount.setText("1");
-                } catch (JSONException e) {
-                    Toast.makeText(context, R.string.srv_err_404_not_found, Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
+        // -- OFFLINE SEARCH --
+        if (appState.isOfflineMode()) {
+            SQLHandler db = SQLHandler.getInstance(getContext());
+            if (db.isDatabaseOpen()) {
+                Select select = new Select(getContext());
+                select.setQuery("SELECT name, price FROM Product WHERE barcode='" + lastBarcode + "'");
+                if (select.execute()) {
+                    if (select.results.getCount() > 0) {
+                        Toast.makeText(getContext(), getString(R
+                                .string.app_op_success), Toast.LENGTH_LONG).show();
+                        tvName.setText(select.results.getString(0));
+                        tvPrice.setText(String.valueOf(select.results.getFloat(1)));
+                        etAmount.setText("1");
+                    }
                 }
             }
+        } else {
+            // -- ONLINE SEARCH --
+            apiServer.getResponse(Request.Method.GET, URLs.BASE_URL + URLs.FIND_PRODUCT + lastBarcode, null, new VolleyCallback() {
+                @Override
+                public void onSuccessResponse(JSONObject result) {
+                    isNewProduct = false;
+                    try {
+                        JSONArray _itms = result.getJSONArray("mobilerp");
+                        JSONObject _itm = _itms.getJSONObject(0);
+                        tvName.setText(_itm.getString("name"));
+                        tvPrice.setText(_itm.getString("price"));
+                        etAmount.setText("1");
+                    } catch (JSONException e) {
+                        Toast.makeText(context, R.string.srv_err_404_not_found, Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                apiServer.genericErrors(error.networkResponse.statusCode);
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    apiServer.genericErrors(error.networkResponse.statusCode);
+                }
+            });
+        }
     }
 
     private void cleanEntries(){
@@ -194,18 +222,6 @@ public class SalesFragment extends Fragment {
         super.onResume();
         barcodeView.resume();
     }
-
-//    public void pause(View view) {
-//        barcodeView.pause();
-//    }
-//
-//    public void resume(View view) {
-//        barcodeView.resume();
-//    }
-//
-//    public void triggerScan(View view) {
-//        barcodeView.decodeSingle(callback);
-//    }
 
     @Override
     public void onPause() {

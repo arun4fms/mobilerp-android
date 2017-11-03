@@ -18,6 +18,7 @@
     <string name="user">Usuario</string>
     <string name="pass">Contraseña</string>
     <string name="login">Entrar</string>
+    <string name="title_activity_sales">Venta</string>
 
     <!-- User messages -->
     <string name="user_hint">Ingrese su nombre de usuario</string>
@@ -37,6 +38,7 @@
     <string name="disable_offline_mode_first">Deshabilite el modo fuera de línea</string>
     <string name="sync_pending_operations_error">Un error ocurrió durante la sincronización</string>
     <string name="not_connected">No estas conectado a ninguna red</string>
+    <string name="app_err_error">Error de applicación</string>
 
     <!-- Server Messages -->
     <string name="srv_err_404_not_found">Elemento no encontrado</string>
@@ -89,4 +91,5 @@
     <string name="database_name">mobilerp.db</string>
     <string name="logfile">upload_operations.log</string>
     <string name="sync_pending_operations">Sincronizar con servidor</string>
+    <string name="has_pending_ops">has_pending_ops</string>
 </resources>

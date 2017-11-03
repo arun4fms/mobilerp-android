@@ -75,6 +75,8 @@
     <string name="download_finished">Download finished</string>
     <string name="offline_mode_enabled">Offline mode enabled</string>
     <string name="offline_mode_disabled">Offline mode disabled</string>
+    <string name="no_db_file">No database found</string>
+    <string name="error_saving_operation">Error saving operation for remote logging</string>
 
     <!-- Server Messages -->
     <string name="srv_err_404_not_found">Item not found</string>

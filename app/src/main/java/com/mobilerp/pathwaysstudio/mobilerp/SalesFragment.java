@@ -105,8 +105,8 @@ public class SalesFragment extends Fragment {
 
         // Get settings
         appState = AppState.getInstance(context);
-        if (appState.isOfflineMode()) Toast.makeText(context, R.string.offline_mode_enabled, 1)
-                .show();
+        if (appState.isOfflineMode())
+            Toast.makeText(context, R.string.offline_mode_enabled, Toast.LENGTH_LONG).show();
 
         //Server init
         apiServer = new APIServer(context);

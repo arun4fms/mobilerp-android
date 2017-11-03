@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Insert;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.OperationsLog;
+import com.mobilerp.pathwaysstudio.mobilerp.offline_mode.Select;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.APIServer;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.URLs;
 import com.mobilerp.pathwaysstudio.mobilerp.online_mode.VolleyCallback;
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 public class FinishSell extends Fragment {
 
     final Fragment me = this;
+    final AppState appState = AppState.getInstance(getContext());
     // Objects
     TextView tvTotalSale;
     ArrayList<SalesItem> items;
@@ -45,7 +49,7 @@ public class FinishSell extends Fragment {
     ListView lvSalesItems;
     ArrayList<ItemListModel> itemsListModel;
     Button btnEndSale;
-
+    OperationsLog log;
     private OnFragmentInteractionListener mListener;
 
     public FinishSell() {
@@ -62,16 +66,16 @@ public class FinishSell extends Fragment {
 
     private void initUI() {
         getActivity().setTitle(R.string.finish_sale);
+        log = OperationsLog.getInstance(getContext());
         tvTotalSale = (TextView) getView().findViewById(R.id.totalSale);
         lvSalesItems = (ListView)getView().findViewById(R.id.itemSalesList);
         btnEndSale = (Button) getView().findViewById(R.id.finish_sale);
         itemsListModel = new ArrayList<>();
 
+
         btnEndSale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                APIServer apiServer = new APIServer(getContext());
-                URLs URL = URLs.getInstance();
                 JSONObject data = new JSONObject();
                 try {
                     JSONArray barcode = new JSONArray();
@@ -82,11 +86,55 @@ public class FinishSell extends Fragment {
                     }
                     data.put("barcode", barcode);
                     data.put("units", units);
-                    Log.d("DATA", data.toString());
+                } catch (JSONException e) {
+                    Log.d("JSON ERROR", e.getMessage());
+                }
+
+                if (appState.isOfflineMode()) {
+                    // -- OFFLINE OPERATION --
+                    String q = "INSERT INTO Sale(date) values(DATETIME('now','localtime'));";
+                    Insert insert = new Insert(getContext());
+                    insert.setQuery(q);
+                    int lastID = -1;
+                    if (insert.execute()) {
+                        Select select = new Select(getContext());
+                        select.setQuery("SELECT MAX(id) FROM Sale;");
+                        if (select.execute())
+                            if (select.results.getCount() > 0)
+                                lastID = select.results.getInt(0);
+                    }
+                    if (lastID != -1) {
+                        for (int i = 0; i < items.size(); i++) {
+                            q = String.format("INSERT INTO " +
+                                    "SaleDetails(idSale, " +
+                                    "idProduct," +
+                                    " " +
+                                    "productPrice, units) VALUES (%d, '%s', %f, %d);", lastID, items
+                                    .get(i).barcode, items.get(i).price, items.get(i).amount);
+                            insert.setQuery(q);
+                            insert.execute();
+                        }
+                        log.add(Request.Method.POST, URLs.MAKE_SALE, data);
+                        appState.flushContext();
+                        Toast.makeText(getContext(), R.string.app_op_success, Toast
+                                .LENGTH_LONG).show();
+                        getActivity().setTitle(R.string.manager);
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .remove(me)
+                                .commit();
+                    }
+
+                } else {
+                    // -- ONLINE OPERATION --
+                    APIServer apiServer = new APIServer(getContext());
+                    URLs URL = URLs.getInstance();
+
                     apiServer.getResponse(Request.Method.POST, URLs.BASE_URL + URLs.MAKE_SALE,
                             data, new VolleyCallback() {
                                 @Override
                                 public void onSuccessResponse(JSONObject result) {
+                                    appState.flushContext();
                                     Toast.makeText(getContext(), R.string.srv_op_success, Toast
                                             .LENGTH_LONG).show();
                                     getActivity().setTitle(R.string.manager);
@@ -94,6 +142,7 @@ public class FinishSell extends Fragment {
                                             .beginTransaction()
                                             .remove(me)
                                             .commit();
+
                                 }
 
                                 @Override
@@ -102,11 +151,10 @@ public class FinishSell extends Fragment {
                                             .LENGTH_LONG).show();
                                 }
                             });
-                }catch (JSONException ignored){
-
                 }
             }
         });
+
     }
 
     @Override

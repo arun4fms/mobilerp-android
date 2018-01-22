@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -305,6 +306,7 @@ public class StockUpdate extends Fragment implements View.OnClickListener {
                 object.put("price", etPrice.getText());
                 object.put("units", etTotal.getText());
             }
+            object.put("token", Calendar.getInstance().getTime().toString());
             return object;
         } catch (JSONException ex) {
             Log.d("JSON_ERROR", ex.toString());

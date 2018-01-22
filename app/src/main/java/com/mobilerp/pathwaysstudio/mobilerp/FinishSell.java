@@ -27,7 +27,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import java.security.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+import java.util.Timer;
 
 
 /**
@@ -86,6 +94,14 @@ public class FinishSell extends Fragment {
                     }
                     data.put("barcode", barcode);
                     data.put("units", units);
+                    try {
+                        MessageDigest md5digest = java.security.MessageDigest.getInstance("MD5");
+                        Date c_time  = Calendar.getInstance().getTime();
+                        data.put("token", c_time.toString());
+                    } catch (NoSuchAlgorithmException e)
+                    {
+                        Log.d("MD5 Error", e.toString());
+                    }
                 } catch (JSONException e) {
                     Log.d("JSON ERROR", e.getMessage());
                 }

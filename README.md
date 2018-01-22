@@ -1,6 +1,6 @@
 # MobilERP
 
-**_Currently under heavy development_**
+**_Abandoned in favor of [MobelERP Kotlin][7]_**
 
 A small self-hosted ERP that works with your smarphone
 
@@ -52,3 +52,4 @@ Licensed under the [Apache License 2.0][5]
 [4]: https://github.com/journeyapps/zxing-android-embedded
 [5]: http://www.apache.org/licenses/LICENSE-2.0
 [6]: https://github.com/eligiobz/mobilerp-android#Roadmap
+[7]: https://travis-ci.org/eligiobz/mobilerp-kotlin
